@@ -37,12 +37,15 @@ return {
     end,
   },
 
-  -- ── Mason (non-nix fallback) ──────────────────────────────────────────────
+  -- ── Mason (non-nix fallback) ──────────────────────────────────────────
   {
     "mason.nvim",
     enabled   = not nixInfo.isNix,
     priority  = 100,
     on_plugin = { "nvim-lspconfig" },
+    after = function(_)
+      require('mason').setup()
+    end,
     lsp = function(plugin) vim.cmd.MasonInstall(plugin.name) end,
   },
 
