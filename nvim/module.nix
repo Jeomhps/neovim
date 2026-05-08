@@ -57,11 +57,20 @@ inputs:
   config.specs.clipboard = {
     data = null;
     extraPackages = lib.optionals (config.settings.clipboard == "wsl") [
-      # Wrapper around PowerShell's Get-Clipboard that:
-      #   - strips \r (CRLF → LF) so pasted text has Unix line endings
-      #   - uses -NoLogo -NoProfile -NonInteractive for the fastest possible startup
+      # wsl-paste: fast clipboard reader for WSL.
+      #
+      # Preferred path  → win32yank.exe (native Windows binary, ~0 ms startup).
+      #   Install on the Windows host once:  scoop install win32yank
+      #   or:  winget install equalsraf.win32yank
+      #
+      # Fallback path   → PowerShell Get-Clipboard (~300-700 ms startup).
+      #   Works out of the box, no extra Windows software needed.
       (pkgs.writeShellScriptBin "wsl-paste" ''
-        powershell.exe -NoLogo -NoProfile -NonInteractive -c Get-Clipboard | tr -d '\r'
+        if command -v win32yank.exe > /dev/null 2>&1; then
+          win32yank.exe -o --lf
+        else
+          powershell.exe -NoLogo -NoProfile -NonInteractive -c Get-Clipboard | tr -d '\r'
+        fi
       '')
     ];
   };

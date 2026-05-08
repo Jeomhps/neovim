@@ -25,8 +25,11 @@ vim.o.termguicolors = true
 
 local clipboard_mode = nixInfo("wsl", "settings", "clipboard")
 if clipboard_mode == "wsl" then
-  -- Use Windows built-ins exposed via WSL interop (no extra packages needed).
-  -- clip.exe handles writes; powershell.exe handles reads.
+  -- Use Windows built-ins exposed via WSL interop.
+  -- clip.exe   → writes (always fast, built-in)
+  -- wsl-paste  → reads: uses win32yank.exe if installed on the Windows host
+  --              (scoop install win32yank / winget install equalsraf.win32yank),
+  --              otherwise falls back to powershell.exe Get-Clipboard (~300-700 ms).
   vim.g.clipboard = {
     name = 'WslClipboard',
     copy  = { ['+'] = 'clip.exe', ['*'] = 'clip.exe' },
