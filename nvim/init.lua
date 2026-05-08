@@ -20,7 +20,9 @@ end
 do
   local plugin_name = vim.g.nix_info_plugin_name
   local ok
-  ok, _G.nixInfo = plugin_name and pcall(require, plugin_name) or false, nil
+  if plugin_name then
+    ok, _G.nixInfo = pcall(require, plugin_name)
+  end
   if not ok then
     local shim = setmetatable({}, { __call = function(_, default) return default end })
     _G.nixInfo = shim
