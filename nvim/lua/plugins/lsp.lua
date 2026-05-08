@@ -47,8 +47,15 @@ return {
       require('mason').setup()
     end,
     lsp = function(plugin)
-      local pkg = plugin.mason or plugin.name
-      vim.cmd.MasonInstall(pkg)
+      local pkg_name = plugin.mason or plugin.name
+      local ok, registry = pcall(require, 'mason-registry')
+      if not ok then return end
+      registry.refresh(function()
+        local ok2, pkg = pcall(registry.get_package, pkg_name)
+        if ok2 and not pkg:is_installed() then
+          pkg:install()
+        end
+      end)
     end,
   },
 
