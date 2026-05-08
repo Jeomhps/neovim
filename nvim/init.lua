@@ -18,13 +18,15 @@ end
 
 -- ── nixInfo bootstrap (also handles non-nix) ─────────────────────────────────
 do
+  local plugin_name = vim.g.nix_info_plugin_name
   local ok
-  ok, _G.nixInfo = pcall(require, vim.g.nix_info_plugin_name)
+  ok, _G.nixInfo = plugin_name and pcall(require, plugin_name) or false, nil
   if not ok then
-    package.loaded[vim.g.nix_info_plugin_name] = setmetatable({}, {
-      __call = function(_, default) return default end
-    })
-    _G.nixInfo = require(vim.g.nix_info_plugin_name)
+    local shim = setmetatable({}, { __call = function(_, default) return default end })
+    _G.nixInfo = shim
+    if plugin_name then
+      package.loaded[plugin_name] = shim
+    end
   end
   nixInfo.isNix = vim.g.nix_info_plugin_name ~= nil
   ---@module 'lzextras'
