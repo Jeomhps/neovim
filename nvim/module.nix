@@ -56,6 +56,14 @@ inputs:
 
   config.specs.clipboard = {
     data = null;
+    extraPackages = lib.optionals (config.settings.clipboard == "wsl") [
+      # Wrapper around PowerShell's Get-Clipboard that:
+      #   - strips \r (CRLF → LF) so pasted text has Unix line endings
+      #   - uses -NoLogo -NoProfile -NonInteractive for the fastest possible startup
+      (pkgs.writeShellScriptBin "wsl-paste" ''
+        powershell.exe -NoLogo -NoProfile -NonInteractive -c Get-Clipboard | tr -d '\r'
+      '')
+    ];
   };
 
   # ── Language specs (extra packages / LSPs) ────────────────────────────────────

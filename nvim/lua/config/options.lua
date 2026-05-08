@@ -30,10 +30,7 @@ if clipboard_mode == "wsl" then
   vim.g.clipboard = {
     name = 'WslClipboard',
     copy  = { ['+'] = 'clip.exe', ['*'] = 'clip.exe' },
-    paste = {
-      ['+'] = { 'powershell.exe', '-NoProfile', '-c', 'Get-Clipboard' },
-      ['*'] = { 'powershell.exe', '-NoProfile', '-c', 'Get-Clipboard' },
-    },
+    paste = { ['+'] = { 'wsl-paste' }, ['*'] = { 'wsl-paste' } },
     cache_enabled = 0,
   }
   vim.opt.clipboard = 'unnamedplus'
