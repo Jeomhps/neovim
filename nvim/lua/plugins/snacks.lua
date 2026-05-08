@@ -5,10 +5,6 @@ return {
     lazy = false,
     priority = 1000,
     after = function(_)
-      -- snacks is a start plugin so its own plugin/ files (incl. netrw disable)
-      -- are already sourced. Deferring setup() here pushes the expensive feature
-      -- initialisation (indent guides, statuscolumn, scope …) to after startup.
-      vim.schedule(function()
       require('snacks').setup({
         explorer = { replace_netrw = true },
         picker   = { sources = { explorer = { auto_close = true } } },
@@ -78,7 +74,6 @@ return {
       vim.keymap.set('n', "<leader>sq", function() Snacks.picker.qflist() end,  { desc = "Quickfix list" })
       vim.keymap.set('n', "<leader>sR", function() Snacks.picker.resume() end,  { desc = "Resume" })
       vim.keymap.set('n', "<leader>su", function() Snacks.picker.undo() end,    { desc = "Undo history" })
-      end) -- end vim.schedule
     end,
   },
 }

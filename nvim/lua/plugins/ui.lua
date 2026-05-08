@@ -1,5 +1,13 @@
 return {
   {
+    "mini.nvim",
+    auto_enable = true,
+    lazy = false,
+    priority = 900,
+    after = function(_) require('mini.icons').setup() end,
+  },
+
+  {
     "fidget.nvim",
     auto_enable = true,
     event = "DeferredUIEnter",

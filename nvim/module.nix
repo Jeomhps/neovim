@@ -82,9 +82,10 @@ inputs:
   config.specs.general = {
     after = [ "lze" ];
     lazy = true;
-    extraPackages = with pkgs; [ lazygit tree-sitter ];
+    extraPackages = with pkgs; [ lazygit tree-sitter trash-cli ];
     data = with pkgs.vimPlugins; [
       { data = vim-sleuth; lazy = false; }
+      { data = mini-nvim; lazy = false; }
       snacks-nvim
       nvim-lspconfig
       nvim-surround
