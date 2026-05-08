@@ -25,12 +25,15 @@ vim.o.termguicolors = true
 
 local clipboard_mode = nixInfo("wsl", "settings", "clipboard")
 if clipboard_mode == "wsl" then
-  -- Explicitly force win32yank so neovim doesn't fall back to OSC 52,
-  -- which doesn't work reliably on WSL when the terminal is unrecognised.
+  -- Use Windows built-ins exposed via WSL interop (no extra packages needed).
+  -- clip.exe handles writes; powershell.exe handles reads.
   vim.g.clipboard = {
-    name = 'win32yank',
-    copy  = { ['+'] = { 'win32yank', '-i', '--crlf' }, ['*'] = { 'win32yank', '-i', '--crlf' } },
-    paste = { ['+'] = { 'win32yank', '-o', '--lf' },  ['*'] = { 'win32yank', '-o', '--lf' } },
+    name = 'WslClipboard',
+    copy  = { ['+'] = 'clip.exe', ['*'] = 'clip.exe' },
+    paste = {
+      ['+'] = { 'powershell.exe', '-NoProfile', '-c', 'Get-Clipboard' },
+      ['*'] = { 'powershell.exe', '-NoProfile', '-c', 'Get-Clipboard' },
+    },
     cache_enabled = 0,
   }
   vim.opt.clipboard = 'unnamedplus'

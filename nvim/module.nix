@@ -56,7 +56,6 @@ inputs:
 
   config.specs.clipboard = {
     data = null;
-    extraPackages = lib.optionals (config.settings.clipboard == "wsl") [ pkgs.win32yank ];
   };
 
   # ── Language specs (extra packages / LSPs) ────────────────────────────────────
