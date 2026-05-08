@@ -46,6 +46,7 @@ vim.pack.add({
   opt('williamboman/mason.nvim'),
 
   -- ── Completion ─────────────────────────────────────────────────────────────
+  opt('Saghen/blink.lib'),
   opt('Saghen/blink.cmp'),
   opt('Saghen/blink.compat'),
   opt('hrsh7th/cmp-cmdline'),
@@ -71,64 +72,3 @@ vim.pack.add({
     -- Opt plugins: already in packpath; lze will call packadd on demand.
   end,
 })
-
--- ── blink.cmp native library ──────────────────────────────────────────────────
--- vim.pack.add does a plain git clone, so the prebuilt Rust fuzzy-match
--- library is never present.  Download the correct asset from GitHub Releases.
-do
-  -- 1. Locate the installed plugin directory.
-  local blink_dir = vim.fn.globpath(vim.o.packpath, 'pack/*/opt/blink.cmp', 0, 1)[1]
-  if not blink_dir or blink_dir == '' then
-    -- Not installed yet (first run) — vim.pack.add is still downloading.
-    -- The binary will be fetched on the next restart after plugins are present.
-    goto blink_done
-  end
-
-  local lib_path = blink_dir .. '/blink.lib'
-  if vim.uv.fs_stat(lib_path) then
-    goto blink_done  -- already present, nothing to do
-  end
-
-  -- 2. Detect OS / arch to pick the right release asset.
-  local os_name  = jit.os:lower()   -- 'linux' | 'osx' | 'windows'
-  local arch     = jit.arch:lower() -- 'x64' | 'arm64' | ...
-
-  local platform
-  if os_name == 'osx' then
-    platform = (arch == 'arm64') and 'aarch64-apple-darwin.dylib'
-                                  or  'x86_64-apple-darwin.dylib'
-  elseif os_name == 'linux' then
-    platform = (arch == 'arm64') and 'aarch64-unknown-linux-gnu.so'
-                                  or  'x86_64-unknown-linux-gnu.so'
-  else
-    vim.notify('[bootstrap] blink.cmp: unsupported platform ' .. os_name .. '/' .. arch, vim.log.levels.WARN)
-    goto blink_done
-  end
-
-  -- 3. Resolve the exact version from the installed plugin's git tag.
-  local tag_result = vim.system(
-    { 'git', '-C', blink_dir, 'describe', '--tags', '--abbrev=0' },
-    { text = true }
-  ):wait()
-  local version = (tag_result.code == 0)
-    and vim.trim(tag_result.stdout)
-    or  nil
-
-  if not version or version == '' then
-    vim.notify('[bootstrap] blink.cmp: could not determine installed version (git describe failed)', vim.log.levels.WARN)
-    goto blink_done
-  end
-
-  -- 4. Download.
-  local url = ('https://github.com/Saghen/blink.cmp/releases/download/%s/%s'):format(version, platform)
-  vim.notify('[bootstrap] Downloading blink.cmp native lib ' .. version .. ' (' .. platform .. ')…', vim.log.levels.INFO)
-
-  local dl = vim.system({ 'curl', '-fsSL', url, '-o', lib_path }, { text = true }):wait()
-  if dl.code ~= 0 then
-    vim.notify('[bootstrap] blink.cmp download failed:\n' .. (dl.stderr or ''), vim.log.levels.ERROR)
-  else
-    vim.notify('[bootstrap] blink.cmp native lib installed.', vim.log.levels.INFO)
-  end
-
-  ::blink_done::
-end
