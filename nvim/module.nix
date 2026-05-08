@@ -44,6 +44,21 @@ inputs:
     }
   ];
 
+  # ── Clipboard ─────────────────────────────────────────────────────────────────
+  # "wsl"    → win32yank in PATH + unnamedplus  (NixOS-WSL / Windows)
+  # "system" → just unnamedplus, no extra tool  (macOS, Linux with X/Wayland)
+  # "none"   → leave clipboard untouched
+  options.settings.clipboard = lib.mkOption {
+    type = lib.types.enum [ "wsl" "system" "none" ];
+    default = "wsl";
+    description = "Clipboard integration mode passed to Lua via nixInfo.";
+  };
+
+  config.specs.clipboard = {
+    data = null;
+    extraPackages = lib.optionals (config.settings.clipboard == "wsl") [ pkgs.win32yank ];
+  };
+
   # ── Language specs (extra packages / LSPs) ────────────────────────────────────
   config.specs.nix = {
     data = null;

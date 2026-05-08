@@ -23,6 +23,12 @@ vim.o.timeoutlen  = 300
 vim.o.completeopt = 'menu,preview,noselect'
 vim.o.termguicolors = true
 
+-- "wsl" and "system" both want unnamedplus; "none" leaves it untouched.
+local clipboard_mode = nixInfo("wsl", "settings", "clipboard")
+if clipboard_mode ~= "none" then
+  vim.opt.clipboard = 'unnamedplus'
+end
+
 vim.g.netrw_liststyle = 0
 vim.g.netrw_banner    = 0
 
