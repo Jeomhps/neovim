@@ -25,16 +25,7 @@ return {
       require("blink.cmp").setup({
         keymap = { preset = 'default' },
 
-        cmdline = {
-          enabled    = true,
-          completion = { menu = { auto_show = true } },
-          sources    = {
-            ['/'] = { 'buffer' },
-            ['?'] = { 'buffer' },
-            [':'] = { 'cmdline', 'cmp_cmdline' },
-            ['@'] = { 'cmdline', 'cmp_cmdline' },
-          },
-        },
+        cmdline = { enabled = true },
 
         fuzzy     = { sorts = { 'exact', 'score', 'sort_text' } },
         signature = { enabled = true, window = { show_documentation = true } },
