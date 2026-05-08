@@ -37,13 +37,26 @@ return {
     end,
   },
 
-  -- ── Mason (non-nix fallback) ──────────────────────────────────────────────
+  -- ── Mason (non-nix fallback) ──────────────────────────────────────────
   {
     "mason.nvim",
     enabled   = not nixInfo.isNix,
     priority  = 100,
     on_plugin = { "nvim-lspconfig" },
-    lsp = function(plugin) vim.cmd.MasonInstall(plugin.name) end,
+    after = function(_)
+      require('mason').setup()
+    end,
+    lsp = function(plugin)
+      local pkg_name = plugin.mason or plugin.name
+      local ok, registry = pcall(require, 'mason-registry')
+      if not ok then return end
+      registry.refresh(function()
+        local ok2, pkg = pcall(registry.get_package, pkg_name)
+        if ok2 and not pkg:is_installed() then
+          pkg:install()
+        end
+      end)
+    end,
   },
 
   -- ── lazydev (Lua LSP extras + nixInfo annotations) ────────────────────────
@@ -66,6 +79,7 @@ return {
   {
     "lua_ls",
     for_cat = "lua",
+    mason   = "lua-language-server",
     lsp = {
       filetypes = { 'lua' },
       settings  = {

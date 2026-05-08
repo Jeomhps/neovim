@@ -25,16 +25,7 @@ return {
       require("blink.cmp").setup({
         keymap = { preset = 'default' },
 
-        cmdline = {
-          enabled    = true,
-          completion = { menu = { auto_show = true } },
-          sources    = function()
-            local t = vim.fn.getcmdtype()
-            if t == '/' or t == '?' then return { 'buffer' } end
-            if t == ':' or t == '@' then return { 'cmdline', 'cmp_cmdline' } end
-            return {}
-          end,
-        },
+        cmdline = { enabled = true },
 
         fuzzy     = { sorts = { 'exact', 'score', 'sort_text' } },
         signature = { enabled = true, window = { show_documentation = true } },

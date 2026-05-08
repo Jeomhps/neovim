@@ -23,7 +23,7 @@ vim.o.timeoutlen  = 300
 vim.o.completeopt = 'menu,preview,noselect'
 vim.o.termguicolors = true
 
-local clipboard_mode = nixInfo("wsl", "settings", "clipboard")
+local clipboard_mode = nixInfo("system", "settings", "clipboard")
 if clipboard_mode == "wsl" then
   -- Use Windows built-ins exposed via WSL interop.
   -- clip.exe   → writes (always fast, built-in)

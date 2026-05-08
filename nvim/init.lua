@@ -1,14 +1,34 @@
 vim.loader.enable() -- bytecode caching
 
+-- ── Non-Nix plugin bootstrap ─────────────────────────────────────────────────
+-- Must run before the nixInfo block because that block calls require('lze').
+-- On Nix, vim.g.nix_info_plugin_name is set by the wrapper — skip entirely.
+if not vim.g.nix_info_plugin_name then
+  require('bootstrap')
+  -- On a fresh install vim.pack.add downloads plugins asynchronously.
+  -- lze won't be in rtp yet; tell the user to restart and bail out early.
+  if not pcall(require, 'lze') then
+    vim.notify(
+      '[bootstrap] Plugins installed – please restart Neovim.',
+      vim.log.levels.WARN
+    )
+    return
+  end
+end
+
 -- ── nixInfo bootstrap (also handles non-nix) ─────────────────────────────────
 do
+  local plugin_name = vim.g.nix_info_plugin_name
   local ok
-  ok, _G.nixInfo = pcall(require, vim.g.nix_info_plugin_name)
+  if plugin_name then
+    ok, _G.nixInfo = pcall(require, plugin_name)
+  end
   if not ok then
-    package.loaded[vim.g.nix_info_plugin_name] = setmetatable({}, {
-      __call = function(_, default) return default end
-    })
-    _G.nixInfo = require(vim.g.nix_info_plugin_name)
+    local shim = setmetatable({}, { __call = function(_, default) return default end })
+    _G.nixInfo = shim
+    if plugin_name then
+      package.loaded[plugin_name] = shim
+    end
   end
   nixInfo.isNix = vim.g.nix_info_plugin_name ~= nil
   ---@module 'lzextras'
@@ -88,10 +108,12 @@ require("config.autocmds")  -- autocommands
 
 -- Snacks must be set up synchronously before VimEnter so that replace_netrw,
 -- statuscolumn, and indent hooks are registered at the right time.
--- packadd makes it available from rtp (it lives in opt on nix).
-if nixInfo.get_nix_plugin_path('snacks.nvim') then
-  vim.cmd.packadd('snacks.nvim')
-  require('config.snacks')
+-- On Nix:     get_nix_plugin_path returns the store path → packadd it.
+-- On non-Nix: bootstrap placed it in packpath as opt → packadd it the same way.
+if nixInfo.get_nix_plugin_path('snacks.nvim') or not nixInfo.isNix then
+  if pcall(vim.cmd.packadd, 'snacks.nvim') then
+    require('config.snacks')
+  end
 end
 
 -- ── plugin specs (each file returns a table of lze specs) ─────────────────────
