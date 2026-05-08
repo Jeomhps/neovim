@@ -46,7 +46,7 @@ vim.pack.add({
   opt('williamboman/mason.nvim'),
 
   -- ── Completion ─────────────────────────────────────────────────────────────
-  opt('Saghen/blink.lib'),
+  gh .. 'Saghen/blink.lib',  -- start: must be in rtp before blink.cmp loads
   opt('Saghen/blink.cmp'),
   opt('Saghen/blink.compat'),
   opt('hrsh7th/cmp-cmdline'),
