@@ -86,6 +86,14 @@ require("config.options")   -- vim options + synchronous colorscheme (no flash)
 require("config.keymaps")   -- base keymaps (no plugin dependencies)
 require("config.autocmds")  -- autocommands
 
+-- Snacks must be set up synchronously before VimEnter so that replace_netrw,
+-- statuscolumn, and indent hooks are registered at the right time.
+-- packadd makes it available from rtp (it lives in opt on nix).
+if nixInfo.get_nix_plugin_path('snacks.nvim') then
+  vim.cmd.packadd('snacks.nvim')
+  require('config.snacks')
+end
+
 -- ── plugin specs (each file returns a table of lze specs) ─────────────────────
 nixInfo.lze.load {
   { import = "plugins.snacks"     },
