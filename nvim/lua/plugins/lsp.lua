@@ -46,7 +46,10 @@ return {
     after = function(_)
       require('mason').setup()
     end,
-    lsp = function(plugin) vim.cmd.MasonInstall(plugin.name) end,
+    lsp = function(plugin)
+      local pkg = plugin.mason or plugin.name
+      vim.cmd.MasonInstall(pkg)
+    end,
   },
 
   -- ── lazydev (Lua LSP extras + nixInfo annotations) ────────────────────────
@@ -69,6 +72,7 @@ return {
   {
     "lua_ls",
     for_cat = "lua",
+    mason   = "lua-language-server",
     lsp = {
       filetypes = { 'lua' },
       settings  = {
