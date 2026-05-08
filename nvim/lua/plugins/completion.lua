@@ -28,12 +28,12 @@ return {
         cmdline = {
           enabled    = true,
           completion = { menu = { auto_show = true } },
-          sources    = function()
-            local t = vim.fn.getcmdtype()
-            if t == '/' or t == '?' then return { 'buffer' } end
-            if t == ':' or t == '@' then return { 'cmdline', 'cmp_cmdline' } end
-            return {}
-          end,
+          sources    = {
+            ['/'] = { 'buffer' },
+            ['?'] = { 'buffer' },
+            [':'] = { 'cmdline', 'cmp_cmdline' },
+            ['@'] = { 'cmdline', 'cmp_cmdline' },
+          },
         },
 
         fuzzy     = { sorts = { 'exact', 'score', 'sort_text' } },
