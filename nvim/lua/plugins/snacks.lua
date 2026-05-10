@@ -7,10 +7,11 @@ return {
     lazy = false,
     after = function(_)
       vim.keymap.set("n", "-",          function() Snacks.explorer.open() end,  { desc = 'File explorer' })
+      vim.keymap.set("n", "<leader>e",  function() Snacks.explorer.open() end,  { desc = 'File explorer' })
       vim.keymap.set("n", "<c-\\>",     function() Snacks.terminal.open() end,  { desc = 'Terminal' })
       vim.keymap.set("n", "<leader>_",  function() Snacks.lazygit.open() end,   { desc = 'LazyGit' })
       vim.keymap.set('n', "<leader>sf", function() Snacks.picker.smart() end,   { desc = "Smart find files" })
-      vim.keymap.set('n', "<leader><leader>s", function() Snacks.picker.buffers() end, { desc = "Search buffers" })
+      vim.keymap.set('n', "<leader><leader>", function() Snacks.picker.buffers() end, { desc = "Search buffers" })
       vim.keymap.set('n', "<leader>ff", function() Snacks.picker.files() end,         { desc = "Find files" })
       vim.keymap.set('n', "<leader>fg", function() Snacks.picker.git_files() end,     { desc = "Find git files" })
       vim.keymap.set('n', "<leader>sb", function() Snacks.picker.lines() end,         { desc = "Buffer lines" })
