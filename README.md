@@ -225,3 +225,8 @@ winget install equalsraf.win32yank
 
 `win32yank.exe` is a tiny native binary — `wsl-paste` will detect it
 automatically and use it instead of PowerShell. No `nixos-rebuild` needed.
+
+
+## MacOS quirks
+
+On macos you will have to add the tree-sitter and tree-sitter-cli packages. Via brew.
