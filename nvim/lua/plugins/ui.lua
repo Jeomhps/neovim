@@ -115,16 +115,7 @@ return {
     event = "BufReadPre",
     after = function(_)
       local rainbow_delimiters = require('rainbow-delimiters')
-      require('rainbow-delimiters.setup').setup({
-        query = {
-          lua = 'rainbow-delimiters',
-          nix = 'rainbow-delimiters',
-        },
-        strategy = {
-          lua = rainbow_delimiters.strategy['local'],
-          nix = rainbow_delimiters.strategy['local'],
-        },
-      })
+      require('rainbow-delimiters.setup').setup({})
       vim.api.nvim_create_autocmd('FileType', {
         callback = function(args)
           rainbow_delimiters.enable(args.buf)
