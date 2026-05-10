@@ -112,9 +112,15 @@ return {
   {
     "rainbow-delimiters.nvim",
     auto_enable = true,
-    event = "DeferredUIEnter",
+    event = "BufReadPre",
     after = function(_)
+      local rainbow_delimiters = require('rainbow-delimiters')
       require('rainbow-delimiters.setup').setup({})
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function(args)
+          rainbow_delimiters.enable(args.buf)
+        end,
+      })
     end,
   },
 }
