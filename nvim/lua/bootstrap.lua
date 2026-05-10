@@ -39,6 +39,7 @@ vim.pack.add({
   opt('lewis6991/gitsigns.nvim'),
   opt('folke/which-key.nvim'),
   opt('j-hui/fidget.nvim'),
+  opt('HiPhish/rainbow-delimiters.nvim'),
 
   -- ── LSP ────────────────────────────────────────────────────────────────────
   opt('neovim/nvim-lspconfig'),
