@@ -9,7 +9,7 @@ return {
       vim.keymap.set("n", "-",          function() Snacks.explorer.open() end,  { desc = 'File explorer' })
       vim.keymap.set("n", "<leader>e",  function() Snacks.explorer.open() end,  { desc = 'File explorer' })
       vim.keymap.set("n", "<c-\\>",     function() Snacks.terminal.open() end,  { desc = 'Terminal' })
-      vim.keymap.set("n", "<leader>_",  function() Snacks.lazygit.open() end,   { desc = 'LazyGit' })
+      vim.keymap.set("n", "gg",  function() Snacks.lazygit.open() end,   { desc = 'LazyGit' })
       vim.keymap.set('n', "<leader>sf", function() Snacks.picker.smart() end,   { desc = "Smart find files" })
       vim.keymap.set('n', "<leader><leader>", function() Snacks.picker.buffers() end, { desc = "Search buffers" })
       vim.keymap.set('n', "<leader>ff", function() Snacks.picker.files() end,         { desc = "Find files" })
