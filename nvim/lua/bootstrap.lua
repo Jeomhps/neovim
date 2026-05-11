@@ -34,6 +34,7 @@ vim.pack.add({
 
   -- ── UI ─────────────────────────────────────────────────────────────────────
   opt('folke/snacks.nvim'),
+  opt('chomosuke/typst-preview.nvim'),
   opt('echasnovski/mini.nvim'),
   opt('nvim-lualine/lualine.nvim'),
   opt('lewis6991/gitsigns.nvim'),

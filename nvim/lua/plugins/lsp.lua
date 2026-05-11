@@ -9,7 +9,7 @@ return {
     end,
     before = function(_)
       vim.lsp.config('*', {
-        on_attach = function(_, bufnr)
+        on_attach = function(client, bufnr)
           local nmap = function(keys, func, desc)
             vim.keymap.set('n', keys, func, { buffer = bufnr, desc = 'LSP: ' .. desc })
           end
@@ -32,6 +32,23 @@ return {
           vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
             vim.lsp.buf.format()
           end, { desc = 'Format current buffer with LSP' })
+          -- ── Tinymist: pin / unpin the main file ──────────────────────────
+          if client.name == 'tinymist' then
+            nmap('<leader>tp', function()
+              client:exec_cmd(
+                { title = 'pin', command = 'tinymist.pinMain',
+                  arguments = { vim.api.nvim_buf_get_name(0) } },
+                { bufnr = bufnr }
+              )
+            end, '[T]inymist [P]in')
+            nmap('<leader>tu', function()
+              client:exec_cmd(
+                { title = 'unpin', command = 'tinymist.pinMain',
+                  arguments = { vim.v.null } },
+                { bufnr = bufnr }
+              )
+            end, '[T]inymist [U]npin')
+          end
         end,
       })
     end,
@@ -105,6 +122,21 @@ return {
           formatting = { command = { "nixfmt" } },
           diagnostic = { suppress = { "sema-escaping-with" } },
         },
+      },
+    },
+  },
+
+  {
+    -- Tinymist (Typst language server)
+    "tinymist",
+    for_cat = "typst",
+    mason = "tinymist",
+    lsp = {
+      filetypes = { "typst" },
+      settings = {
+        formatterMode = "typstyle",
+        exportPdf = "onType",
+        semanticTokens = "disable",
       },
     },
   },

@@ -123,4 +123,19 @@ return {
       })
     end,
   },
+
+  {
+    "typst-preview.nvim",
+    auto_enable = true,
+    -- Load for typst files; can also set lazy = false to always load
+    ft = "typst",
+    after = function(_)
+      -- typst-preview sets itself up on require; call setup and explicitly
+      -- point it at the tinymist binary Neovim has on its PATH.
+      local ok, mod = pcall(require, 'typst-preview')
+      if ok and type(mod.setup) == 'function' then
+        mod.setup({ dependencies_bin = { tinymist = 'tinymist' } })
+      end
+    end,
+  },
 }

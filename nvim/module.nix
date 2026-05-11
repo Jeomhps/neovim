@@ -72,6 +72,15 @@ inputs:
           powershell.exe -NoLogo -NoProfile -NonInteractive -c Get-Clipboard | tr -d '\r'
         fi
       '')
+      # wslview: opens a URL / file in the default Windows application.
+      # typst-preview.nvim detects WSL and calls wslview to open the preview
+      # in the host browser. explorer.exe does the same thing and is always
+      # available in WSL without any extra Windows-side software.
+      # This is used by typst-preview.nvim to open the preview in the host browser
+      # when running in WSL.
+      (pkgs.writeShellScriptBin "wslview" ''
+        explorer.exe "$@"
+      '')
     ];
   };
 
@@ -94,23 +103,33 @@ inputs:
     ];
   };
 
+  config.specs.typst = {
+    # Provide tinymist (Typst language server) in the Nix environment so
+    # the server binary is on PATH for Nix-managed Neovim.
+    data = null;
+    extraPackages = with pkgs; [
+      tinymist
+    ];
+  };
+
   # ── General plugins ───────────────────────────────────────────────────────────
   config.specs.general = {
     after = [ "lze" ];
     lazy = true;
     extraPackages = with pkgs; [ lazygit tree-sitter trash-cli ];
     data = with pkgs.vimPlugins; [
-      { data = vim-sleuth; lazy = false; }
-      { data = mini-nvim; lazy = false; }
-      snacks-nvim
-      nvim-lspconfig
-      nvim-surround
-      vim-startuptime
-      blink-cmp
-      blink-compat
-      cmp-cmdline
-      colorful-menu-nvim
-      lualine-nvim
+    { data = vim-sleuth; lazy = false; }
+    { data = mini-nvim; lazy = false; }
+    snacks-nvim
+    typst-preview-nvim
+    nvim-lspconfig
+    nvim-surround
+    vim-startuptime
+    blink-cmp
+    blink-compat
+    cmp-cmdline
+    colorful-menu-nvim
+    lualine-nvim
       gitsigns-nvim
       which-key-nvim
       fidget-nvim

@@ -15,3 +15,10 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern  = '*',
   callback = function() vim.highlight.on_yank() end,
 })
+
+-- Detect Typst files and set filetype
+vim.api.nvim_create_autocmd({'BufReadPost', 'BufNewFile'}, {
+  pattern = {'*.typ'},
+  callback = function() vim.bo.filetype = 'typst' end,
+  desc = 'Set filetype for Typst files',
+})
