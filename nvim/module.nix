@@ -72,6 +72,15 @@ inputs:
           powershell.exe -NoLogo -NoProfile -NonInteractive -c Get-Clipboard | tr -d '\r'
         fi
       '')
+      # wslview: opens a URL / file in the default Windows application.
+      # typst-preview.nvim detects WSL and calls wslview to open the preview
+      # in the host browser. explorer.exe does the same thing and is always
+      # available in WSL without any extra Windows-side software.
+      # This is used by typst-preview.nvim to open the preview in the host browser
+      # when running in WSL.
+      (pkgs.writeShellScriptBin "wslview" ''
+        explorer.exe "$@"
+      '')
     ];
   };
 
