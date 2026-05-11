@@ -125,11 +125,10 @@ return {
   },
 
   {
-    "chomosuke/typst-preview.nvim",
+    "typst-preview.nvim",
     auto_enable = true,
     -- Load for typst files; can also set lazy = false to always load
     ft = "typst",
-    version = "1.*",
     after = function(_)
       -- typst-preview sets itself up on require; call setup and explicitly
       -- point it at the tinymist binary Neovim has on its PATH.
