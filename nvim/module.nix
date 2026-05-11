@@ -100,17 +100,18 @@ inputs:
     lazy = true;
     extraPackages = with pkgs; [ lazygit tree-sitter trash-cli ];
     data = with pkgs.vimPlugins; [
-      { data = vim-sleuth; lazy = false; }
-      { data = mini-nvim; lazy = false; }
-      snacks-nvim
-      nvim-lspconfig
-      nvim-surround
-      vim-startuptime
-      blink-cmp
-      blink-compat
-      cmp-cmdline
-      colorful-menu-nvim
-      lualine-nvim
+    { data = vim-sleuth; lazy = false; }
+    { data = mini-nvim; lazy = false; }
+    snacks-nvim
+    typst-preview-nvim
+    nvim-lspconfig
+    nvim-surround
+    vim-startuptime
+    blink-cmp
+    blink-compat
+    cmp-cmdline
+    colorful-menu-nvim
+    lualine-nvim
       gitsigns-nvim
       which-key-nvim
       fidget-nvim

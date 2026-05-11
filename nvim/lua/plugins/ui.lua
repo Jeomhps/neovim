@@ -123,4 +123,19 @@ return {
       })
     end,
   },
+
+  {
+    "chomosuke/typst-preview.nvim",
+    auto_enable = true,
+    -- Load for typst files; can also set lazy = false to always load
+    ft = "typst",
+    version = "1.*",
+    after = function(_)
+      -- typst-preview sets itself up on require; call setup with defaults
+      local ok, mod = pcall(require, 'typst-preview')
+      if ok and type(mod.setup) == 'function' then
+        mod.setup({})
+      end
+    end,
+  },
 }
