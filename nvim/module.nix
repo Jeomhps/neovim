@@ -94,6 +94,15 @@ inputs:
     ];
   };
 
+  config.specs.typst = {
+    # Provide tinymist (Typst language server) in the Nix environment so
+    # the server binary is on PATH for Nix-managed Neovim.
+    data = null;
+    extraPackages = with pkgs; [
+      tinymist
+    ];
+  };
+
   # ── General plugins ───────────────────────────────────────────────────────────
   config.specs.general = {
     after = [ "lze" ];
