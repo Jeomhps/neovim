@@ -186,7 +186,7 @@ inputs:
     };
 
   # Collect all extraPackages across specs into the wrapper's PATH
-  config.extraPackages = config.specCollect (acc: v: acc ++ (v.extraPackages or [ ])) [ ];
+  config.runtimePkgs = config.specCollect (acc: v: acc ++ (v.extraPackages or [ ])) [ ];
 
   # Exposes { specName = true/false; } to Lua via nixInfo for for_cat checks
   options.settings.cats = lib.mkOption {
