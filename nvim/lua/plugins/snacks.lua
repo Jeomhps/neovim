@@ -12,7 +12,7 @@ return {
       vim.keymap.set("n", "<leader>gg",  function() Snacks.lazygit.open() end,   { desc = 'LazyGit' })
       vim.keymap.set('n', "<leader>sf", function() Snacks.picker.smart() end,   { desc = "Smart find files" })
       vim.keymap.set('n', "<leader><leader>", function() Snacks.picker.buffers() end, { desc = "Search buffers" })
-      vim.keymap.set('n', "<leader>ff", function() Snacks.picker.files() end,         { desc = "Find files" })
+      vim.keymap.set('n', "<leader>ff", function() Snacks.picker.files({ hidden = true }) end, { desc = "Find files" })
       vim.keymap.set('n', "<leader>fg", function() Snacks.picker.git_files() end,     { desc = "Find git files" })
       vim.keymap.set('n', "<leader>sb", function() Snacks.picker.lines() end,         { desc = "Buffer lines" })
       vim.keymap.set('n', "<leader>sB", function() Snacks.picker.grep_buffers() end,  { desc = "Grep open buffers" })
