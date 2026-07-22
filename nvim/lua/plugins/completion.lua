@@ -23,7 +23,10 @@ return {
     event = "DeferredUIEnter",
     after = function(_)
       require("blink.cmp").setup({
-        keymap = { preset = 'default' },
+        keymap = {
+          preset = 'default',
+          ['<Tab>'] = { 'select_and_accept', 'fallback' },
+        },
 
         cmdline = { enabled = true },
 
