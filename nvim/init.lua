@@ -101,6 +101,15 @@ end)
 vim.g.mapleader      = ' '
 vim.g.maplocalleader = ' '
 
+-- On Nix, the wrapper points rtp at this repo directly without touching
+-- stdpath, so vim.fn.stdpath('config') would resolve to the (nonexistent)
+-- default ~/.config/nvim. On non-Nix, stdpath('config') is correct as-is.
+if nixInfo.isNix then
+  nixInfo.config_dir = vim.fn.fnamemodify(debug.getinfo(1, 'S').source:sub(2), ':p:h')
+else
+  nixInfo.config_dir = vim.fn.stdpath('config')
+end
+
 -- ── core config ───────────────────────────────────────────────────────────────
 require("config.options")   -- vim options + synchronous colorscheme (no flash)
 require("config.keymaps")   -- base keymaps (no plugin dependencies)
