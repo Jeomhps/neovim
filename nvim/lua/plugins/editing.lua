@@ -67,6 +67,9 @@ return {
     auto_enable = true,
     keys = { { "<leader>sr", desc = "Search and Replace" } },
     after = function(_)
+      require("grug-far").setup({
+        keymaps = { close = { n = "q" } },
+      })
       vim.keymap.set("n", "<leader>sr", function() require("grug-far").open() end, { desc = "Search and Replace" })
     end,
   },

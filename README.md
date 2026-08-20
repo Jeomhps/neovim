@@ -117,6 +117,7 @@ Dashboard, notifier and zen mode are configured via `config/snacks.lua` (`Snacks
 | `<leader>fg` | Find git files |
 | `<leader>sg` | Grep |
 | `<leader>sr` | Search and replace (multi-file) |
+| `q` (in grug-far) | Close grug-far |
 | `<leader>sw` | Grep word under cursor |
 | `<leader>sb` | Buffer lines |
 | `<leader>sB` | Grep open buffers |
@@ -126,6 +127,7 @@ Dashboard, notifier and zen mode are configured via `config/snacks.lua` (`Snacks
 | `<leader>sm` | Marks |
 | `<leader>sM` | Man pages |
 | `<leader>su` | Undo history |
+| `<leader>sn` | Notification history |
 | `<leader>sR` | Resume last picker |
 
 ### LSP
@@ -158,6 +160,7 @@ Dashboard, notifier and zen mode are configured via `config/snacks.lua` (`Snacks
 | `<leader>gtd` | Toggle deleted |
 | `<leader>gv` | Diffview open |
 | `<leader>gh` | Diffview file history |
+| `q` (in diffview) | Close diffview |
 
 ### Session (`<leader>S`)
 | Key | Action |

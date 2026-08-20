@@ -30,6 +30,7 @@ return {
       vim.keymap.set('n', "<leader>sq", function() Snacks.picker.qflist() end,  { desc = "Quickfix list" })
       vim.keymap.set('n', "<leader>sR", function() Snacks.picker.resume() end,  { desc = "Resume" })
       vim.keymap.set('n', "<leader>su", function() Snacks.picker.undo() end,    { desc = "Undo history" })
+      vim.keymap.set('n', "<leader>sn", function() Snacks.notifier.show_history() end, { desc = "Notification history" })
     end,
   },
 }

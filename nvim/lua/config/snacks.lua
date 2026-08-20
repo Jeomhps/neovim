@@ -7,7 +7,7 @@ require('snacks').setup({
   git      = {},
   terminal = {},
   scope    = {},
-  notifier = {},
+  notifier = { style = "minimal" },
   zen      = {},
   dashboard = {
     preset = {
