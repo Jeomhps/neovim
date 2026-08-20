@@ -3,7 +3,7 @@
 -- Keymaps are still registered lazily via the lze spec in plugins/snacks.lua.
 require('snacks').setup({
   explorer = { replace_netrw = true },
-  picker   = { sources = { explorer = { auto_close = true } } },
+  picker   = { focus = "list", sources = { explorer = { auto_close = true } } },
   git      = {},
   terminal = {},
   scope    = {},
