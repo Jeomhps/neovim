@@ -8,9 +8,8 @@ return {
       conform.setup({
         formatters_by_ft = {
           -- add formatters here, e.g.: go = { "gofmt" },
-          lua       = nixInfo(nil, "settings", "cats", "lua") and { "stylua" } or nil,
-          sh        = nixInfo(nil, "settings", "cats", "bash") and { "shfmt" } or nil,
-          terraform = nixInfo(nil, "settings", "cats", "terraform") and { "terraform_fmt" } or nil,
+          lua = nixInfo(nil, "settings", "cats", "lua") and { "stylua" } or nil,
+          sh  = nixInfo(nil, "settings", "cats", "bash") and { "shfmt" } or nil,
         },
         format_on_save = function(_)
           if vim.g.autoformat == false then return end

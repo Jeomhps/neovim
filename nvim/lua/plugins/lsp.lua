@@ -204,12 +204,4 @@ return {
     },
   },
 
-  {
-    "terraformls",
-    for_cat = "terraform",
-    mason   = "terraform-ls",
-    lsp = {
-      filetypes = { "terraform", "terraform-vars" },
-    },
-  },
 }

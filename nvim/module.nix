@@ -153,14 +153,6 @@ inputs:
     ];
   };
 
-  config.specs.terraform = {
-    data = null;
-    extraPackages = with pkgs; [
-      terraform-ls
-      terraform
-    ];
-  };
-
   # ── General plugins ───────────────────────────────────────────────────────────
   config.specs.general = {
     after = [ "lze" ];
@@ -213,7 +205,6 @@ inputs:
         tree-sitter-markdown-inline
         tree-sitter-bash
         tree-sitter-dockerfile
-        tree-sitter-hcl
         tree-sitter-html
         tree-sitter-css
         tree-sitter-vim

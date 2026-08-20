@@ -21,7 +21,7 @@ Built on [`lze`](https://github.com/BirdeeHub/lze) + [`lzextras`](https://github
 |---|---|
 | Plugin loader | `lze` + `lzextras` |
 | Colorscheme | `catppuccin` (mocha by default, Nix-configurable) |
-| LSP | `nvim-lspconfig` + `Mason` (non-Nix fallback) — lua, nix, typst, go, c/c++, yaml, bash, docker, terraform |
+| LSP | `nvim-lspconfig` + `Mason` (non-Nix fallback) — lua, nix, typst, go, c/c++, yaml, bash, docker |
 | Completion | `blink.cmp` (with cmdline + colorful labels) |
 | Snippets | `blink.cmp` built-in engine + `friendly-snippets` |
 | Fuzzy finder | `Snacks.picker` |

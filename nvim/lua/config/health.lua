@@ -55,10 +55,6 @@ function M.check()
   vim.health.start("Docker")
   check_bin("docker-langserver", { hint = "nix: rebuild to pick up module.nix changes | non-nix: installs via Mason on first Dockerfile" })
   check_bin("hadolint", { hint = "nix: rebuild to pick up module.nix changes | non-nix: install manually (nvim-lint has no Mason fallback)" })
-
-  vim.health.start("Terraform")
-  check_bin("terraform-ls", { hint = "nix: rebuild to pick up module.nix changes | non-nix: installs via Mason on first .tf file" })
-  check_bin("terraform", { hint = "nix: rebuild to pick up module.nix changes | non-nix: install manually (needed for terraform_fmt)" })
 end
 
 return M
