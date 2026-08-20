@@ -16,6 +16,11 @@ return {
     auto_enable = true,
     on_plugin = { "blink.cmp" },
   },
+  {
+    "friendly-snippets",
+    auto_enable = true,
+    dep_of = { "blink.cmp" },
+  },
 
   {
     "blink.cmp",
@@ -46,10 +51,11 @@ return {
         },
 
         sources = {
-          default = { 'lsp', 'path', 'buffer', 'omni' },
+          default = { 'lsp', 'path', 'buffer', 'snippets', 'omni' },
           providers = {
-            path = { score_offset = 50 },
-            lsp  = { score_offset = 40 },
+            path     = { score_offset = 50 },
+            lsp      = { score_offset = 40 },
+            snippets = { score_offset = 30 },
             cmp_cmdline = {
               name         = 'cmp_cmdline',
               module       = 'blink.compat.source',

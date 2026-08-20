@@ -62,6 +62,22 @@ elseif clipboard_mode == "system" then
   -- "none" → leave everything untouched
 end
 
+-- ── Diagnostics ───────────────────────────────────────────────────────────────
+vim.diagnostic.config({
+  underline = true,
+  severity_sort = true,
+  virtual_text = { spacing = 4, source = "if_many", prefix = "●" },
+  float = { border = "rounded", source = "if_many" },
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = " ",
+      [vim.diagnostic.severity.WARN]  = " ",
+      [vim.diagnostic.severity.INFO]  = " ",
+      [vim.diagnostic.severity.HINT]  = " ",
+    },
+  },
+})
+
 -- ── Colorscheme ───────────────────────────────────────────────────────────────
 -- catppuccin-nvim is a start plugin (always in rtp) so this is safe here:
 -- synchronous, no VimEnter, no vim.schedule → zero flash.

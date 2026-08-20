@@ -31,6 +31,18 @@ return {
       vim.keymap.set('n', "<leader>sR", function() Snacks.picker.resume() end,  { desc = "Resume" })
       vim.keymap.set('n', "<leader>su", function() Snacks.picker.undo() end,    { desc = "Undo history" })
       vim.keymap.set('n', "<leader>sn", function() Snacks.notifier.show_history() end, { desc = "Notification history" })
+
+      -- ── Toggles ──────────────────────────────────────────────────────────
+      Snacks.toggle.option("spell",         { name = "Spelling" }):map("<leader>ts")
+      Snacks.toggle.option("wrap",          { name = "Wrap" }):map("<leader>tw")
+      Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>tn")
+      Snacks.toggle.diagnostics():map("<leader>td")
+      Snacks.toggle.inlay_hints():map("<leader>ti")
+      Snacks.toggle.new({
+        name = "Autoformat",
+        get  = function() return vim.g.autoformat ~= false end,
+        set  = function(state) vim.g.autoformat = state end,
+      }):map("<leader>tf")
     end,
   },
 }

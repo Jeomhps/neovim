@@ -9,6 +9,7 @@ require('snacks').setup({
   scope    = {},
   notifier = { style = "minimal" },
   zen      = {},
+  toggle   = { which_key = true, notify = true },
   dashboard = {
     preset = {
       header = [[

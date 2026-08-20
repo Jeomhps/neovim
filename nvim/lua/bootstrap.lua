@@ -55,6 +55,7 @@ vim.pack.add({
   opt('Saghen/blink.compat'),
   opt('hrsh7th/cmp-cmdline'),
   opt('xzbdmw/colorful-menu.nvim'),
+  opt('rafamadriz/friendly-snippets'),
 
   -- ── Treesitter ─────────────────────────────────────────────────────────────
   opt('nvim-treesitter/nvim-treesitter'),

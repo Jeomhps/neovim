@@ -23,12 +23,13 @@ Built on [`lze`](https://github.com/BirdeeHub/lze) + [`lzextras`](https://github
 | Colorscheme | `catppuccin` (mocha by default, Nix-configurable) |
 | LSP | `nvim-lspconfig` + `Mason` (non-Nix fallback) |
 | Completion | `blink.cmp` (with cmdline + colorful labels) |
+| Snippets | `blink.cmp` built-in engine + `friendly-snippets` |
 | Fuzzy finder | `Snacks.picker` |
 | File explorer | `Snacks.explorer` (replaces netrw) |
 | Terminal | `Snacks.terminal` |
 | Git signs | `gitsigns.nvim` |
 | Git UI | `LazyGit` (via Snacks) |
-| Formatter | `conform.nvim` |
+| Formatter | `conform.nvim` (format-on-save, toggleable) |
 | Linter | `nvim-lint` |
 | Syntax / folds | `nvim-treesitter` + text objects |
 | Statusline | `lualine.nvim` (powerline separators, icons) |
@@ -100,6 +101,12 @@ Dashboard, notifier and zen mode are configured via `config/snacks.lua` (`Snacks
 | `<leader>y/Y` | Yank to system clipboard |
 | `<leader>p` | Paste from system clipboard |
 | `<leader>FF` | Format file (conform + LSP fallback) |
+| `<leader>tf` | Toggle format-on-save |
+| `<leader>ts` | Toggle spelling |
+| `<leader>tw` | Toggle wrap |
+| `<leader>tn` | Toggle relative number |
+| `<leader>td` | Toggle diagnostics |
+| `<leader>ti` | Toggle inlay hints |
 
 ### Buffers (`<leader><leader>`)
 | Key | Action |

@@ -129,6 +129,7 @@ inputs:
       blink-compat
       cmp-cmdline
       colorful-menu-nvim
+      friendly-snippets
       lualine-nvim
       bufferline-nvim
       gitsigns-nvim

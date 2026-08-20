@@ -10,6 +10,10 @@ return {
           -- add formatters here, e.g.: go = { "gofmt" },
           lua = nixInfo(nil, "settings", "cats", "lua") and { "stylua" } or nil,
         },
+        format_on_save = function(_)
+          if vim.g.autoformat == false then return end
+          return { timeout_ms = 1000, lsp_fallback = true }
+        end,
       })
       vim.keymap.set({ "n", "v" }, "<leader>FF", function()
         conform.format({ lsp_fallback = true, async = false, timeout_ms = 1000 })
