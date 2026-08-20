@@ -94,6 +94,21 @@ return {
   },
 
   {
+    "diffview.nvim",
+    auto_enable = true,
+    cmd = { "DiffviewOpen", "DiffviewFileHistory", "DiffviewClose" },
+    keys = {
+      { "<leader>gv", desc = "Diffview open" },
+      { "<leader>gh", desc = "Diffview file history" },
+    },
+    after = function(_)
+      require('diffview').setup({})
+      vim.keymap.set('n', '<leader>gv', '<cmd>DiffviewOpen<CR>',        { desc = 'Diffview open' })
+      vim.keymap.set('n', '<leader>gh', '<cmd>DiffviewFileHistory<CR>', { desc = 'Diffview file history' })
+    end,
+  },
+
+  {
     "which-key.nvim",
     auto_enable = true,
     event = "DeferredUIEnter",

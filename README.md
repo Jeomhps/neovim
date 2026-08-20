@@ -42,6 +42,10 @@ Built on [`lze`](https://github.com/BirdeeHub/lze) + [`lzextras`](https://github
 | Session persistence | `persistence.nvim` |
 | Multi-file search & replace | `grug-far.nvim` |
 | Auto-pairs | `mini.pairs` |
+| Notifications | `Snacks.notifier` |
+| Dashboard | `Snacks.dashboard` |
+| Zen / focus mode | `Snacks.zen` |
+| Full diff review | `diffview.nvim` |
 
 ---
 
@@ -69,7 +73,8 @@ The early *setup* (indent guides, statuscolumn, `replace_netrw`) lives in `lua/c
 - **nvim-treesitter-textobjects** — `am/im` (function), `ac/ic` (class), `as` (scope).
 
 ### `lua/plugins/ui.lua`
-`mini.icons`, `fidget.nvim`, `lualine.nvim`, `gitsigns.nvim`, `which-key.nvim`.
+`mini.icons`, `mini.pairs`, `fidget.nvim`, `lualine.nvim`, `gitsigns.nvim`, `diffview.nvim`, `which-key.nvim`.
+Dashboard, notifier and zen mode are configured via `config/snacks.lua` (`Snacks.dashboard`, `Snacks.notifier`, `Snacks.zen`).
 
 ### `lua/plugins/editing.lua`
 `conform.nvim` (formatting), `nvim-lint` (linting), `nvim-surround`, `vim-startuptime`, `persistence.nvim` (session save/restore), `grug-far.nvim` (multi-file search & replace).
@@ -151,6 +156,8 @@ The early *setup* (indent guides, statuscolumn, `replace_netrw`) lives in `lua/c
 | `<leader>gd` / `<leader>gD` | Diff index / last commit |
 | `<leader>gtb` | Toggle line blame |
 | `<leader>gtd` | Toggle deleted |
+| `<leader>gv` | Diffview open |
+| `<leader>gh` | Diffview file history |
 
 ### Session (`<leader>S`)
 | Key | Action |
@@ -164,6 +171,7 @@ The early *setup* (indent guides, statuscolumn, `replace_netrw`) lives in `lua/c
 | Key | Action |
 |---|---|
 | `<C-\>` | Toggle terminal |
+| `<leader>z` | Toggle Zen mode |
 
 ---
 

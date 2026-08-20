@@ -131,6 +131,7 @@ inputs:
     colorful-menu-nvim
     lualine-nvim
       gitsigns-nvim
+      diffview-nvim
       which-key-nvim
       fidget-nvim
       nvim-lint

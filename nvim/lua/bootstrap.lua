@@ -38,6 +38,7 @@ vim.pack.add({
   opt('echasnovski/mini.nvim'),
   opt('nvim-lualine/lualine.nvim'),
   opt('lewis6991/gitsigns.nvim'),
+  opt('sindrets/diffview.nvim'),
   opt('folke/which-key.nvim'),
   opt('j-hui/fidget.nvim'),
   opt('HiPhish/rainbow-delimiters.nvim'),
