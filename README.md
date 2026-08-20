@@ -39,6 +39,9 @@ Built on [`lze`](https://github.com/BirdeeHub/lze) + [`lzextras`](https://github
 | Indent guides | `Snacks.indent` |
 | Startup profiling | `vim-startuptime` |
 | Clipboard (WSL) | `wsl-paste` / `win32yank` |
+| Session persistence | `persistence.nvim` |
+| Multi-file search & replace | `grug-far.nvim` |
+| Auto-pairs | `mini.pairs` |
 
 ---
 
@@ -69,7 +72,7 @@ The early *setup* (indent guides, statuscolumn, `replace_netrw`) lives in `lua/c
 `mini.icons`, `fidget.nvim`, `lualine.nvim`, `gitsigns.nvim`, `which-key.nvim`.
 
 ### `lua/plugins/editing.lua`
-`conform.nvim` (formatting), `nvim-lint` (linting), `nvim-surround`, `vim-startuptime`.
+`conform.nvim` (formatting), `nvim-lint` (linting), `nvim-surround`, `vim-startuptime`, `persistence.nvim` (session save/restore), `grug-far.nvim` (multi-file search & replace).
 
 ---
 
@@ -108,6 +111,7 @@ The early *setup* (indent guides, statuscolumn, `replace_netrw`) lives in `lua/c
 | `<leader>ff` | Find files |
 | `<leader>fg` | Find git files |
 | `<leader>sg` | Grep |
+| `<leader>sr` | Search and replace (multi-file) |
 | `<leader>sw` | Grep word under cursor |
 | `<leader>sb` | Buffer lines |
 | `<leader>sB` | Grep open buffers |
@@ -147,6 +151,14 @@ The early *setup* (indent guides, statuscolumn, `replace_netrw`) lives in `lua/c
 | `<leader>gd` / `<leader>gD` | Diff index / last commit |
 | `<leader>gtb` | Toggle line blame |
 | `<leader>gtd` | Toggle deleted |
+
+### Session (`<leader>S`)
+| Key | Action |
+|---|---|
+| `<leader>Ss` | Restore session for cwd |
+| `<leader>SS` | Select session |
+| `<leader>Sl` | Restore last session |
+| `<leader>Sd` | Stop saving current session |
 
 ### Terminal
 | Key | Action |

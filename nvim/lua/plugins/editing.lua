@@ -48,4 +48,26 @@ return {
       vim.g.startuptime_exe_path    = nixInfo(vim.v.progpath, "progpath")
     end,
   },
+
+  {
+    "persistence.nvim",
+    auto_enable = true,
+    event = "DeferredUIEnter",
+    after = function(_)
+      require('persistence').setup()
+      vim.keymap.set('n', '<leader>Ss', function() require('persistence').load() end,             { desc = '[S]ession restore (cwd)' })
+      vim.keymap.set('n', '<leader>SS', function() require('persistence').select() end,            { desc = '[S]ession select' })
+      vim.keymap.set('n', '<leader>Sl', function() require('persistence').load({ last = true }) end, { desc = '[S]ession restore last' })
+      vim.keymap.set('n', '<leader>Sd', function() require('persistence').stop() end,               { desc = "[S]ession don't save" })
+    end,
+  },
+
+  {
+    "grug-far.nvim",
+    auto_enable = true,
+    keys = { { "<leader>sr", desc = "Search and Replace" } },
+    after = function(_)
+      vim.keymap.set("n", "<leader>sr", function() require("grug-far").open() end, { desc = "Search and Replace" })
+    end,
+  },
 }

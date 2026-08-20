@@ -4,7 +4,10 @@ return {
     auto_enable = true,
     lazy = false,
     priority = 900,
-    after = function(_) require('mini.icons').setup() end,
+    after = function(_)
+      require('mini.icons').setup()
+      require('mini.pairs').setup()
+    end,
   },
 
   {
@@ -103,6 +106,7 @@ return {
         { "<leader>g",  group = "[g]it" },
         { "<leader>r",  group = "[r]ename" },
         { "<leader>s",  group = "[s]earch" },
+        { "<leader>S",  group = "[S]ession" },
         { "<leader>t",  group = "[t]oggles" },
         { "<leader>w",  group = "[w]orkspace" },
       }

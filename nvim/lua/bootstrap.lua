@@ -64,6 +64,8 @@ vim.pack.add({
   opt('mfussenegger/nvim-lint'),
   opt('kylechui/nvim-surround'),
   opt('dstein64/vim-startuptime'),
+  opt('folke/persistence.nvim'),
+  opt('MagicDuck/grug-far.nvim'),
 }, {
   confirm = false,
   load = function(p)

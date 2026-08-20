@@ -136,6 +136,8 @@ inputs:
       nvim-lint
       conform-nvim
       nvim-treesitter-textobjects
+      persistence-nvim
+      grug-far-nvim
       rainbow-delimiters-nvim
       # withAllGrammars bakes 170+ parser directories into rtp, scanning them
       # on every startup is a major source of latency — list only what you use.
