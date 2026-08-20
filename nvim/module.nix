@@ -90,6 +90,7 @@ inputs:
     extraPackages = with pkgs; [
       nixd
       nixfmt
+      statix
     ];
   };
 
@@ -100,6 +101,7 @@ inputs:
     extraPackages = with pkgs; [
       lua-language-server
       stylua
+      selene
     ];
   };
 

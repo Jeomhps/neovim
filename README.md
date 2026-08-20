@@ -30,7 +30,8 @@ Built on [`lze`](https://github.com/BirdeeHub/lze) + [`lzextras`](https://github
 | Git signs | `gitsigns.nvim` |
 | Git UI | `LazyGit` (via Snacks) |
 | Formatter | `conform.nvim` (format-on-save, toggleable) |
-| Linter | `nvim-lint` |
+| Linter | `nvim-lint` (`selene` for lua, `statix` for nix) |
+| Health check | `:checkhealth config` — verifies required external tools are on PATH |
 | Syntax / folds | `nvim-treesitter` + text objects |
 | Statusline | `lualine.nvim` (powerline separators, icons) |
 | Buffer tabs | `bufferline.nvim` (rounded/slant tabs, diagnostics) |

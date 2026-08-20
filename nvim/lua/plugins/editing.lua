@@ -27,7 +27,8 @@ return {
     event = "FileType",
     after = function(_)
       require('lint').linters_by_ft = {
-        -- add linters here, e.g.: javascript = { 'eslint' },
+        lua = { 'selene' },
+        nix = { 'statix' },
       }
       vim.api.nvim_create_autocmd({ "BufWritePost" }, {
         callback = function() require("lint").try_lint() end,
