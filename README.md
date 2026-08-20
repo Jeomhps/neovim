@@ -31,7 +31,8 @@ Built on [`lze`](https://github.com/BirdeeHub/lze) + [`lzextras`](https://github
 | Formatter | `conform.nvim` |
 | Linter | `nvim-lint` |
 | Syntax / folds | `nvim-treesitter` + text objects |
-| Statusline | `lualine.nvim` (with buffer tabline) |
+| Statusline | `lualine.nvim` (powerline separators, icons) |
+| Buffer tabs | `bufferline.nvim` (rounded/slant tabs, diagnostics) |
 | Icons | `mini.icons` |
 | Surround | `nvim-surround` |
 | LSP progress | `fidget.nvim` |
@@ -73,8 +74,9 @@ The early *setup* (indent guides, statuscolumn, `replace_netrw`) lives in `lua/c
 - **nvim-treesitter-textobjects** — `am/im` (function), `ac/ic` (class), `as` (scope).
 
 ### `lua/plugins/ui.lua`
-`mini.icons`, `mini.pairs`, `fidget.nvim`, `lualine.nvim`, `gitsigns.nvim`, `diffview.nvim`, `which-key.nvim`.
+`mini.icons`, `mini.pairs`, `fidget.nvim`, `lualine.nvim`, `bufferline.nvim`, `gitsigns.nvim`, `diffview.nvim`, `which-key.nvim`.
 Dashboard, notifier and zen mode are configured via `config/snacks.lua` (`Snacks.dashboard`, `Snacks.notifier`, `Snacks.zen`).
+`vim.o.winborder = 'rounded'` (`config/options.lua`) rounds every floating window (LSP hover, diagnostics, pickers, notifications) globally.
 
 ### `lua/plugins/editing.lua`
 `conform.nvim` (formatting), `nvim-lint` (linting), `nvim-surround`, `vim-startuptime`, `persistence.nvim` (session save/restore), `grug-far.nvim` (multi-file search & replace).

@@ -24,10 +24,10 @@ return {
     after = function(_)
       require('lualine').setup({
         options = {
-          icons_enabled        = false,
+          icons_enabled        = true,
           theme                = "auto",
-          component_separators = '|',
-          section_separators   = '',
+          component_separators = { left = '', right = '' },
+          section_separators   = { left = '', right = '' },
         },
         sections = {
           lualine_c = { { 'filename', path = 1, status = true } },
@@ -36,9 +36,22 @@ return {
           lualine_b = { { 'filename', path = 3, status = true } },
           lualine_x = { 'filetype' },
         },
-        tabline = {
-          lualine_a = { 'buffers' },
-          lualine_z = { 'tabs' },
+      })
+    end,
+  },
+
+  {
+    "bufferline.nvim",
+    auto_enable = true,
+    event = "DeferredUIEnter",
+    after = function(_)
+      require('bufferline').setup({
+        options = {
+          diagnostics         = "nvim_lsp",
+          separator_style     = "slant",
+          always_show_bufferline = true,
+          show_buffer_close_icons = false,
+          show_close_icon     = false,
         },
       })
     end,

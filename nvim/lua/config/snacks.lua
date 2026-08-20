@@ -11,6 +11,13 @@ require('snacks').setup({
   zen      = {},
   dashboard = {
     preset = {
+      header = [[
+ ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
+ ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
+ ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
+ ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
+ ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
+ ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]],
       keys = {
         { icon = " ", key = "f", desc = "Find File",       action = function() Snacks.picker.files({ hidden = true }) end },
         { icon = " ", key = "n", desc = "New File",         action = ":ene | startinsert" },

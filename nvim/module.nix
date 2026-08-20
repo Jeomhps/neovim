@@ -130,6 +130,7 @@ inputs:
     cmp-cmdline
     colorful-menu-nvim
     lualine-nvim
+      bufferline-nvim
       gitsigns-nvim
       diffview-nvim
       which-key-nvim

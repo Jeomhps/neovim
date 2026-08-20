@@ -37,6 +37,7 @@ vim.pack.add({
   opt('chomosuke/typst-preview.nvim'),
   opt('echasnovski/mini.nvim'),
   opt('nvim-lualine/lualine.nvim'),
+  opt('akinsho/bufferline.nvim'),
   opt('lewis6991/gitsigns.nvim'),
   opt('sindrets/diffview.nvim'),
   opt('folke/which-key.nvim'),

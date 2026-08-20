@@ -10,6 +10,9 @@ vim.opt.scrolloff  = 10
 vim.wo.number         = true
 vim.wo.relativenumber = true
 vim.wo.signcolumn     = 'yes'
+vim.wo.cursorline     = true
+
+vim.o.winborder = 'rounded'
 
 vim.o.mouse       = 'a'
 vim.o.expandtab   = true
