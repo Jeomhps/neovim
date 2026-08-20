@@ -25,40 +25,40 @@ function M.check()
   check_bin("trash", { hint = "trash-cli — used by Snacks.explorer delete | nix: add to extraPackages | non-nix: install manually" })
 
   vim.health.start("Lua")
-  check_bin("lua-language-server", { hint = "nix: enable settings.cats.lua | non-nix: installs via Mason on first .lua file" })
-  check_bin("stylua", { hint = "nix: enable settings.cats.lua | non-nix: install manually (conform has no Mason fallback)" })
-  check_bin("selene", { hint = "nix: enable settings.cats.lua | non-nix: install manually (nvim-lint has no Mason fallback)" })
+  check_bin("lua-language-server", { hint = "nix: rebuild to pick up module.nix changes | non-nix: installs via Mason on first .lua file" })
+  check_bin("stylua", { hint = "nix: rebuild to pick up module.nix changes | non-nix: install manually (conform has no Mason fallback)" })
+  check_bin("selene", { hint = "nix: rebuild to pick up module.nix changes | non-nix: install manually (nvim-lint has no Mason fallback)" })
 
   vim.health.start("Nix")
-  check_bin("nixd", { hint = "nix: enable settings.cats.nix | non-nix: not applicable" })
-  check_bin("nixfmt", { hint = "nix: enable settings.cats.nix | non-nix: not applicable" })
-  check_bin("statix", { hint = "nix: enable settings.cats.nix | non-nix: not applicable" })
+  check_bin("nixd", { hint = "nix: rebuild to pick up module.nix changes | non-nix: not applicable" })
+  check_bin("nixfmt", { hint = "nix: rebuild to pick up module.nix changes | non-nix: not applicable" })
+  check_bin("statix", { hint = "nix: rebuild to pick up module.nix changes | non-nix: not applicable" })
 
   vim.health.start("Typst")
-  check_bin("tinymist", { hint = "nix: enable settings.cats.typst | non-nix: installs via Mason on first .typ file" })
+  check_bin("tinymist", { hint = "nix: rebuild to pick up module.nix changes | non-nix: installs via Mason on first .typ file" })
 
   vim.health.start("Go")
-  check_bin("go", { hint = "nix: enable settings.cats.go | non-nix: install manually" })
-  check_bin("gopls", { hint = "nix: enable settings.cats.go | non-nix: installs via Mason on first .go file" })
+  check_bin("go", { hint = "nix: rebuild to pick up module.nix changes | non-nix: install manually" })
+  check_bin("gopls", { hint = "nix: rebuild to pick up module.nix changes | non-nix: installs via Mason on first .go file" })
 
   vim.health.start("C / C++")
-  check_bin("clangd", { hint = "nix: enable settings.cats.c | non-nix: installs via Mason on first .c/.cpp file" })
+  check_bin("clangd", { hint = "nix: rebuild to pick up module.nix changes | non-nix: installs via Mason on first .c/.cpp file" })
 
   vim.health.start("YAML")
-  check_bin("yaml-language-server", { hint = "nix: enable settings.cats.yaml | non-nix: installs via Mason on first .yaml file" })
+  check_bin("yaml-language-server", { hint = "nix: rebuild to pick up module.nix changes | non-nix: installs via Mason on first .yaml file" })
 
   vim.health.start("Bash")
-  check_bin("bash-language-server", { hint = "nix: enable settings.cats.bash | non-nix: installs via Mason on first shell script" })
-  check_bin("shellcheck", { hint = "nix: enable settings.cats.bash | non-nix: install manually (nvim-lint has no Mason fallback)" })
-  check_bin("shfmt", { hint = "nix: enable settings.cats.bash | non-nix: install manually (conform has no Mason fallback)" })
+  check_bin("bash-language-server", { hint = "nix: rebuild to pick up module.nix changes | non-nix: installs via Mason on first shell script" })
+  check_bin("shellcheck", { hint = "nix: rebuild to pick up module.nix changes | non-nix: install manually (nvim-lint has no Mason fallback)" })
+  check_bin("shfmt", { hint = "nix: rebuild to pick up module.nix changes | non-nix: install manually (conform has no Mason fallback)" })
 
   vim.health.start("Docker")
-  check_bin("docker-langserver", { hint = "nix: enable settings.cats.docker | non-nix: installs via Mason on first Dockerfile" })
-  check_bin("hadolint", { hint = "nix: enable settings.cats.docker | non-nix: install manually (nvim-lint has no Mason fallback)" })
+  check_bin("docker-langserver", { hint = "nix: rebuild to pick up module.nix changes | non-nix: installs via Mason on first Dockerfile" })
+  check_bin("hadolint", { hint = "nix: rebuild to pick up module.nix changes | non-nix: install manually (nvim-lint has no Mason fallback)" })
 
   vim.health.start("Terraform")
-  check_bin("terraform-ls", { hint = "nix: enable settings.cats.terraform | non-nix: installs via Mason on first .tf file" })
-  check_bin("terraform", { hint = "nix: enable settings.cats.terraform | non-nix: install manually (needed for terraform_fmt)" })
+  check_bin("terraform-ls", { hint = "nix: rebuild to pick up module.nix changes | non-nix: installs via Mason on first .tf file" })
+  check_bin("terraform", { hint = "nix: rebuild to pick up module.nix changes | non-nix: install manually (needed for terraform_fmt)" })
 end
 
 return M
