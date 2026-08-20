@@ -48,6 +48,7 @@ vim.pack.add({
   opt('neovim/nvim-lspconfig'),
   opt('folke/lazydev.nvim'),
   opt('williamboman/mason.nvim'),
+  opt('SmiteshP/nvim-navic'),
 
   -- ── Completion ─────────────────────────────────────────────────────────────
   gh .. 'Saghen/blink.lib',  -- start: must be in rtp before blink.cmp loads

@@ -8,7 +8,9 @@ return {
       conform.setup({
         formatters_by_ft = {
           -- add formatters here, e.g.: go = { "gofmt" },
-          lua = nixInfo(nil, "settings", "cats", "lua") and { "stylua" } or nil,
+          lua       = nixInfo(nil, "settings", "cats", "lua") and { "stylua" } or nil,
+          sh        = nixInfo(nil, "settings", "cats", "bash") and { "shfmt" } or nil,
+          terraform = nixInfo(nil, "settings", "cats", "terraform") and { "terraform_fmt" } or nil,
         },
         format_on_save = function(_)
           if vim.g.autoformat == false then return end
@@ -27,8 +29,10 @@ return {
     event = "FileType",
     after = function(_)
       require('lint').linters_by_ft = {
-        lua = { 'selene' },
-        nix = { 'statix' },
+        lua        = { 'selene' },
+        nix        = { 'statix' },
+        sh         = { 'shellcheck' },
+        dockerfile = { 'hadolint' },
       }
       vim.api.nvim_create_autocmd({ "BufWritePost" }, {
         callback = function() require("lint").try_lint() end,

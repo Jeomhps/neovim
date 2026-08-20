@@ -129,6 +129,38 @@ inputs:
     ];
   };
 
+  config.specs.yaml = {
+    data = null;
+    extraPackages = with pkgs; [
+      yaml-language-server
+    ];
+  };
+
+  config.specs.bash = {
+    data = null;
+    extraPackages = with pkgs; [
+      bash-language-server
+      shellcheck
+      shfmt
+    ];
+  };
+
+  config.specs.docker = {
+    data = null;
+    extraPackages = with pkgs; [
+      dockerfile-language-server
+      hadolint
+    ];
+  };
+
+  config.specs.terraform = {
+    data = null;
+    extraPackages = with pkgs; [
+      terraform-ls
+      terraform
+    ];
+  };
+
   # ── General plugins ───────────────────────────────────────────────────────────
   config.specs.general = {
     after = [ "lze" ];
@@ -140,6 +172,7 @@ inputs:
       snacks-nvim
       typst-preview-nvim
       nvim-lspconfig
+      nvim-navic
       nvim-surround
       vim-startuptime
       blink-cmp
@@ -179,6 +212,8 @@ inputs:
         tree-sitter-markdown
         tree-sitter-markdown-inline
         tree-sitter-bash
+        tree-sitter-dockerfile
+        tree-sitter-hcl
         tree-sitter-html
         tree-sitter-css
         tree-sitter-vim

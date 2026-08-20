@@ -54,6 +54,9 @@ return {
           show_close_icon     = false,
         },
       })
+      vim.keymap.set('n', '<leader><leader>p', '<cmd>BufferLinePick<CR>',        { desc = 'Pick buffer' })
+      vim.keymap.set('n', '<leader><leader>o', '<cmd>BufferLineCloseOthers<CR>', { desc = 'Close other buffers' })
+      vim.keymap.set('n', '<leader><leader>s', '<cmd>BufferLineSortByDirectory<CR>', { desc = 'Sort buffers by directory' })
     end,
   },
 

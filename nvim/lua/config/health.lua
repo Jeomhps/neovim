@@ -43,6 +43,22 @@ function M.check()
 
   vim.health.start("C / C++")
   check_bin("clangd", { hint = "nix: enable settings.cats.c | non-nix: installs via Mason on first .c/.cpp file" })
+
+  vim.health.start("YAML")
+  check_bin("yaml-language-server", { hint = "nix: enable settings.cats.yaml | non-nix: installs via Mason on first .yaml file" })
+
+  vim.health.start("Bash")
+  check_bin("bash-language-server", { hint = "nix: enable settings.cats.bash | non-nix: installs via Mason on first shell script" })
+  check_bin("shellcheck", { hint = "nix: enable settings.cats.bash | non-nix: install manually (nvim-lint has no Mason fallback)" })
+  check_bin("shfmt", { hint = "nix: enable settings.cats.bash | non-nix: install manually (conform has no Mason fallback)" })
+
+  vim.health.start("Docker")
+  check_bin("docker-langserver", { hint = "nix: enable settings.cats.docker | non-nix: installs via Mason on first Dockerfile" })
+  check_bin("hadolint", { hint = "nix: enable settings.cats.docker | non-nix: install manually (nvim-lint has no Mason fallback)" })
+
+  vim.health.start("Terraform")
+  check_bin("terraform-ls", { hint = "nix: enable settings.cats.terraform | non-nix: installs via Mason on first .tf file" })
+  check_bin("terraform", { hint = "nix: enable settings.cats.terraform | non-nix: install manually (needed for terraform_fmt)" })
 end
 
 return M

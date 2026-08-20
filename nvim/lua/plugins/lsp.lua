@@ -32,6 +32,11 @@ return {
           vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
             vim.lsp.buf.format()
           end, { desc = 'Format current buffer with LSP' })
+          -- ── nvim-navic: winbar breadcrumbs ────────────────────────────────
+          local ok_navic, navic = pcall(require, 'nvim-navic')
+          if ok_navic and client:supports_method('textDocument/documentSymbol') then
+            navic.attach(client, bufnr)
+          end
           -- ── Tinymist: pin / unpin the main file ──────────────────────────
           if client.name == 'tinymist' then
             nmap('<leader>tp', function()
@@ -50,6 +55,19 @@ return {
             end, '[T]inymist [U]npin')
           end
         end,
+      })
+    end,
+  },
+
+  -- ── nvim-navic (winbar breadcrumbs) ──────────────────────────────────────
+  {
+    "nvim-navic",
+    auto_enable = true,
+    on_plugin = { "nvim-lspconfig" },
+    after = function(_)
+      require('nvim-navic').setup({
+        separator = '  ',
+        depth_limit = 5,
       })
     end,
   },
@@ -156,6 +174,42 @@ return {
     mason   = "clangd",
     lsp = {
       filetypes = { "c", "cpp" },
+    },
+  },
+
+  {
+    "yamlls",
+    for_cat = "yaml",
+    mason   = "yaml-language-server",
+    lsp = {
+      filetypes = { "yaml" },
+    },
+  },
+
+  {
+    "bashls",
+    for_cat = "bash",
+    mason   = "bash-language-server",
+    lsp = {
+      filetypes = { "sh" },
+    },
+  },
+
+  {
+    "dockerls",
+    for_cat = "docker",
+    mason   = "dockerfile-language-server",
+    lsp = {
+      filetypes = { "dockerfile" },
+    },
+  },
+
+  {
+    "terraformls",
+    for_cat = "terraform",
+    mason   = "terraform-ls",
+    lsp = {
+      filetypes = { "terraform", "terraform-vars" },
     },
   },
 }

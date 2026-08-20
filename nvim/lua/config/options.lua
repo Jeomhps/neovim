@@ -62,6 +62,18 @@ elseif clipboard_mode == "system" then
   -- "none" → leave everything untouched
 end
 
+-- ── Winbar (nvim-navic breadcrumbs) ──────────────────────────────────────────
+-- Defined here (not in the plugin spec) since winbar is redrawn constantly and
+-- must stay safe even before nvim-navic has loaded or attached to any client.
+_G.NavicWinbar = function()
+  local ok, navic = pcall(require, 'nvim-navic')
+  if ok and navic.is_available() then
+    return navic.get_location()
+  end
+  return ''
+end
+vim.o.winbar = "%{%v:lua.NavicWinbar()%}"
+
 -- ── Diagnostics ───────────────────────────────────────────────────────────────
 vim.diagnostic.config({
   underline = true,

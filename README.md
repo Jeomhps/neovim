@@ -21,7 +21,7 @@ Built on [`lze`](https://github.com/BirdeeHub/lze) + [`lzextras`](https://github
 |---|---|
 | Plugin loader | `lze` + `lzextras` |
 | Colorscheme | `catppuccin` (mocha by default, Nix-configurable) |
-| LSP | `nvim-lspconfig` + `Mason` (non-Nix fallback) |
+| LSP | `nvim-lspconfig` + `Mason` (non-Nix fallback) — lua, nix, typst, go, c/c++, yaml, bash, docker, terraform |
 | Completion | `blink.cmp` (with cmdline + colorful labels) |
 | Snippets | `blink.cmp` built-in engine + `friendly-snippets` |
 | Fuzzy finder | `Snacks.picker` |
@@ -35,6 +35,7 @@ Built on [`lze`](https://github.com/BirdeeHub/lze) + [`lzextras`](https://github
 | Syntax / folds | `nvim-treesitter` + text objects |
 | Statusline | `lualine.nvim` (powerline separators, icons) |
 | Buffer tabs | `bufferline.nvim` (rounded/slant tabs, diagnostics) |
+| Winbar breadcrumbs | `nvim-navic` |
 | Icons | `mini.icons` |
 | Surround | `nvim-surround` |
 | LSP progress | `fidget.nvim` |
@@ -117,6 +118,9 @@ Dashboard, notifier and zen mode are configured via `config/snacks.lua` (`Snacks
 | `<leader><leader>l` | Last buffer |
 | `<leader><leader>d` | Delete buffer |
 | `<leader><leader>` | Search open buffers |
+| `<leader><leader>p` | Pick buffer |
+| `<leader><leader>o` | Close other buffers |
+| `<leader><leader>s` | Sort buffers by directory |
 
 ### Files & Search (`<leader>f` / `<leader>s`)
 | Key | Action |
