@@ -18,7 +18,7 @@ vim.keymap.set("n", "<leader><leader>d", "<cmd>bdelete<CR>", { desc = 'Delete bu
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic' })
+vim.keymap.set('n', '<leader>de', vim.diagnostic.open_float, { desc = '[D]iagnostic [E]xpand' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
 vim.keymap.set({"v", "x", "n"}, '<leader>y', '"+y',  { noremap = true, silent = true, desc = 'Yank to clipboard' })

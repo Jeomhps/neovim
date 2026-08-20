@@ -84,7 +84,8 @@ The early *setup* (indent guides, statuscolumn, `replace_netrw`) lives in `lua/c
 | `<C-d>` / `<C-u>` | Scroll down/up (centered) |
 | `n` / `N` | Next/prev search result (centered) |
 | `J` / `K` (visual) | Move selection down/up |
-| `<leader>e` | Floating diagnostic |
+| `<leader>e` | File explorer |
+| `<leader>de` | Floating diagnostic |
 | `<leader>q` | Diagnostics location list |
 | `<leader>y/Y` | Yank to system clipboard |
 | `<leader>p` | Paste from system clipboard |
@@ -97,7 +98,7 @@ The early *setup* (indent guides, statuscolumn, `replace_netrw`) lives in `lua/c
 | `<leader><leader>]` | Next buffer |
 | `<leader><leader>l` | Last buffer |
 | `<leader><leader>d` | Delete buffer |
-| `<leader><leader>s` | Search open buffers |
+| `<leader><leader>` | Search open buffers |
 
 ### Files & Search (`<leader>f` / `<leader>s`)
 | Key | Action |
@@ -136,7 +137,7 @@ The early *setup* (indent guides, statuscolumn, `replace_netrw`) lives in `lua/c
 ### Git (`<leader>g`)
 | Key | Action |
 |---|---|
-| `<leader>_` | LazyGit |
+| `<leader>gg` | LazyGit |
 | `]c` / `[c` | Next/prev hunk |
 | `<leader>gs` / `<leader>gr` | Stage/reset hunk |
 | `<leader>gS` / `<leader>gR` | Stage/reset buffer |
