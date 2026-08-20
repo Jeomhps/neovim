@@ -140,4 +140,22 @@ return {
       },
     },
   },
+
+  {
+    "gopls",
+    for_cat = "go",
+    mason   = "gopls",
+    lsp = {
+      filetypes = { "go", "gomod", "gowork", "gotmpl" },
+    },
+  },
+
+  {
+    "clangd",
+    for_cat = "c",
+    mason   = "clangd",
+    lsp = {
+      filetypes = { "c", "cpp" },
+    },
+  },
 }

@@ -112,6 +112,21 @@ inputs:
     ];
   };
 
+  config.specs.go = {
+    data = null;
+    extraPackages = with pkgs; [
+      go
+      gopls
+    ];
+  };
+
+  config.specs.c = {
+    data = null;
+    extraPackages = with pkgs; [
+      clang-tools
+    ];
+  };
+
   # ── General plugins ───────────────────────────────────────────────────────────
   config.specs.general = {
     after = [ "lze" ];
