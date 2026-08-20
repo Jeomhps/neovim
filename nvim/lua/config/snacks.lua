@@ -2,6 +2,10 @@
 -- hooks (replace_netrw, statuscolumn, indent) are registered before VimEnter.
 -- Keymaps are still registered lazily via the lze spec in plugins/snacks.lua.
 require('snacks').setup({
+  -- Auto-disables treesitter/LSP/matchparen/etc. above the size threshold —
+  -- treesitter's foldexpr/indentexpr in particular grind to a halt on large
+  -- files (e.g. a 65k-line JSON file), so this is the fix for that.
+  bigfile  = {},
   explorer = { replace_netrw = true },
   picker   = { focus = "list", sources = { explorer = { auto_close = true } } },
   git      = {},

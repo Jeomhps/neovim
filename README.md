@@ -41,6 +41,7 @@ Built on [`lze`](https://github.com/BirdeeHub/lze) + [`lzextras`](https://github
 | LSP progress | `fidget.nvim` |
 | Keybinding hints | `which-key.nvim` |
 | Indent guides | `Snacks.indent` |
+| Big file handling | `Snacks.bigfile` (disables treesitter/LSP/matchparen above ~1.5MB) |
 | Startup profiling | `vim-startuptime` |
 | Clipboard (WSL) | `wsl-paste` / `win32yank` |
 | Session persistence | `persistence.nvim` |

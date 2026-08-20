@@ -8,6 +8,19 @@ return {
     after = function(_)
       local function try_attach(buf, language)
         if not vim.treesitter.language.add(language) then return false end
+        -- Snacks.bigfile flags huge/minified buffers via vim.b.bigfile. The
+        -- foldexpr/indentexpr computation below is O(lines) and is what
+        -- actually grinds a 65k-line file to a halt — highlighting itself is
+        -- viewport-driven and cheap, so keep it (deferred, for an instant
+        -- open) but skip fold/indent entirely for these buffers.
+        if vim.b[buf].bigfile then
+          vim.schedule(function()
+            if vim.api.nvim_buf_is_valid(buf) then
+              vim.treesitter.start(buf, language)
+            end
+          end)
+          return true
+        end
         vim.treesitter.start(buf, language)
         vim.wo.foldexpr   = "v:lua.vim.treesitter.foldexpr()"
         vim.wo.foldmethod = "expr"
