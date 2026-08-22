@@ -43,6 +43,8 @@ vim.pack.add({
   opt('folke/which-key.nvim'),
   opt('j-hui/fidget.nvim'),
   opt('HiPhish/rainbow-delimiters.nvim'),
+  opt('folke/flash.nvim'),
+  opt('folke/todo-comments.nvim'),
 
   -- ── LSP ────────────────────────────────────────────────────────────────────
   opt('neovim/nvim-lspconfig'),

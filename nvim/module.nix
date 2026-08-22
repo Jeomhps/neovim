@@ -184,6 +184,8 @@ inputs:
       persistence-nvim
       grug-far-nvim
       rainbow-delimiters-nvim
+      flash-nvim
+      todo-comments-nvim
       # withAllGrammars bakes 170+ parser directories into rtp, scanning them
       # on every startup is a major source of latency — list only what you use.
       # Run `nix repl` and browse `pkgs.tree-sitter-grammars` to find more names.

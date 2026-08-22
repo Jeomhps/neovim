@@ -81,4 +81,38 @@ return {
       vim.keymap.set("n", "<leader>sr", function() require("grug-far").open() end, { desc = "Search and Replace" })
     end,
   },
+
+  {
+    -- flash.nvim: jump to any visible location in a few keystrokes.
+    -- "S" is intentionally left unmapped in visual mode so it doesn't
+    -- collide with nvim-surround's visual-mode "add surround" keymap.
+    "flash.nvim",
+    auto_enable = true,
+    keys = {
+      { "s", mode = { "n", "x", "o" }, desc = "Flash" },
+      { "S", mode = { "n", "o" },      desc = "Flash Treesitter" },
+      { "r", mode = "o",               desc = "Remote Flash" },
+      { "R", mode = { "o", "x" },      desc = "Treesitter Search" },
+    },
+    after = function(_)
+      vim.keymap.set({ "n", "x", "o" }, "s", function() require("flash").jump() end,               { desc = "Flash" })
+      vim.keymap.set({ "n", "o" },      "S", function() require("flash").treesitter() end,          { desc = "Flash Treesitter" })
+      vim.keymap.set("o",               "r", function() require("flash").remote() end,              { desc = "Remote Flash" })
+      vim.keymap.set({ "o", "x" },      "R", function() require("flash").treesitter_search() end,   { desc = "Treesitter Search" })
+      vim.keymap.set("c", "<C-s>", function() require("flash").toggle() end, { desc = "Toggle Flash Search" })
+    end,
+  },
+
+  {
+    "todo-comments.nvim",
+    auto_enable = true,
+    event = "DeferredUIEnter",
+    after = function(_)
+      local todo = require("todo-comments")
+      todo.setup({})
+      vim.keymap.set("n", "]t", function() todo.jump_next() end, { desc = "Next Todo Comment" })
+      vim.keymap.set("n", "[t", function() todo.jump_prev() end, { desc = "Previous Todo Comment" })
+      vim.keymap.set("n", "<leader>st", "<cmd>TodoQuickFix<CR>", { desc = "Search Todo Comments" })
+    end,
+  },
 }
