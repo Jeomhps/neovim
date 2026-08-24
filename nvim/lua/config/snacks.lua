@@ -7,7 +7,7 @@ require('snacks').setup({
   -- files (e.g. a 65k-line JSON file), so this is the fix for that.
   bigfile  = {},
   explorer = { replace_netrw = true },
-  picker   = { focus = "list", sources = { explorer = { auto_close = true } } },
+  picker   = { focus = "input", sources = { explorer = { auto_close = true, focus = "list" } } },
   git      = {},
   terminal = {},
   scope    = {},
