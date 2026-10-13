@@ -28,6 +28,11 @@ return {
         vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
         return true
       end
+      -- No dedicated dotenv parser: .env / .env.* / *.env (filetype `env`)
+      -- are valid shell assignments, so borrow bash for comments, quoting,
+      -- `export` and ${VAR} interpolation. The filetype stays `env`, so
+      -- bashls/shellcheck (attached to `sh`) won't lint secrets files.
+      vim.treesitter.language.register("bash", "env")
       local installable = require("nvim-treesitter").get_available()
       vim.api.nvim_create_autocmd("FileType", {
         callback = function(args)
