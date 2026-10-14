@@ -21,6 +21,25 @@ local function opt(repo, name)
   return t
 end
 
+vim.api.nvim_create_autocmd('PackChanged', {
+  desc = 'Build blink.cmp native library after install/update',
+  callback = function(ev)
+    local d = ev.data
+    if d.spec.name ~= 'blink.cmp' or (d.kind ~= 'install' and d.kind ~= 'update') then
+      return
+    end
+    pcall(vim.cmd.packadd, 'blink.lib')
+    pcall(vim.cmd.packadd, 'blink.cmp')
+    local ok, cmp = pcall(require, 'blink.cmp')
+    if ok and type(cmp.build) == 'function' then
+      local build_ok, err = pcall(function() cmp.build():wait(60000) end)
+      if not build_ok then
+        vim.notify('[bootstrap] blink.cmp build failed: ' .. tostring(err), vim.log.levels.WARN)
+      end
+    end
+  end,
+})
+
 vim.pack.add({
   -- ── Lazy-loading framework ─────────────────────────────────────────────────
   -- Start plugins: packadd'd immediately by the load function below so that
@@ -88,19 +107,5 @@ vim.pack.add({
 
 -- ── blink.cmp native library ──────────────────────────────────────────────────
 -- blink.cmp v2 delegates native lib download to blink.lib.native.
--- Replicates lazy.nvim's `build = function() require('blink.cmp').build():wait() end`
--- blink.lib is already packadd'd (start plugin); we just need to temporarily
--- packadd blink.cmp so we can call build(), then let lze manage it from there.
-do
-  local blink_dir = vim.fn.globpath(vim.o.packpath, 'pack/*/opt/blink.cmp', 0, 1)[1]
-  if blink_dir and blink_dir ~= '' then
-    pcall(vim.cmd.packadd, 'blink.cmp')
-    local ok, cmp = pcall(require, 'blink.cmp')
-    if ok and type(cmp.build) == 'function' then
-      local build_ok, err = pcall(function() cmp.build():wait(60000) end)
-      if not build_ok then
-        vim.notify('[bootstrap] blink.cmp build failed: ' .. tostring(err), vim.log.levels.WARN)
-      end
-    end
-  end
-end
+-- Build only when vim.pack installs/updates it, not on every startup: a build
+-- on each launch packadds blink.cmp eagerly and defeats its lazy loading.
