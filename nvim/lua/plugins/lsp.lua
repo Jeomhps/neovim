@@ -101,12 +101,15 @@ return {
     cmd = { "LazyDev" },
     ft  = "lua",
     after = function(_)
-      require('lazydev').setup({
+      -- nixInfo returns its first argument on non-Nix, so only build these paths on Nix.
+      local library = {}
+      if nixInfo.isNix then
         library = {
           { words = { "nixInfo%.lze" }, path = nixInfo("lze",      "plugins", "start", "lze")      .. '/lua' },
           { words = { "nixInfo%.lze" }, path = nixInfo("lzextras", "plugins", "start", "lzextras") .. '/lua' },
-        },
-      })
+        }
+      end
+      require('lazydev').setup({ library = library })
     end,
   },
 
