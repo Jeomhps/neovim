@@ -18,6 +18,13 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- Filetypes for devops files neovim doesn't detect on its own. Compound names
 -- (yaml.*) keep yaml tooling working while letting servers target the subtype.
+-- Only treat templates/ as helm when inside a chart (CloudFormation etc. also use that dir).
+local function helm_chart(path)
+  if vim.fs.find('Chart.yaml', { upward = true, path = vim.fs.dirname(path) })[1] then
+    return 'helm'
+  end
+end
+
 vim.filetype.add({
   extension = { tfvars = 'terraform-vars' },
   filename = {
@@ -29,8 +36,8 @@ vim.filetype.add({
     ['site.yaml'] = 'yaml.ansible',
   },
   pattern = {
-    ['.*/templates/.*%.ya?ml'] = 'helm',
-    ['.*/templates/.*%.tpl'] = 'helm',
+    ['.*/templates/.*%.ya?ml'] = helm_chart,
+    ['.*/templates/.*%.tpl'] = helm_chart,
     ['.*/helmfile.*%.ya?ml'] = 'helm',
     ['.*/playbooks/.*%.ya?ml'] = 'yaml.ansible',
     ['.*/roles/.*/tasks/.*%.ya?ml'] = 'yaml.ansible',
