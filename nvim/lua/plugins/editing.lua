@@ -47,6 +47,13 @@ return {
           ["terraform-vars"] = tf,
           hcl                = tf,
         }),
+        formatters = {
+          -- Match yamllint's defaults (document-start, 2 spaces before comments); out of the
+          -- box yamlfmt strips the leading `---` and pads comments with 1 space.
+          yamlfmt = {
+            prepend_args = { "-formatter", "include_document_start=true,pad_line_comments=2,retain_line_breaks=true" },
+          },
+        },
         format_on_save = function(_)
           if vim.g.autoformat == false then return end
           return { timeout_ms = 1000, lsp_format = "fallback" }
