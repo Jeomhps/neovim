@@ -11,26 +11,32 @@ return {
       vim.keymap.set("n", "<c-\\>",     function() Snacks.terminal.open() end,  { desc = 'Terminal' })
       vim.keymap.set("n", "<leader>z",  function() Snacks.zen() end,            { desc = 'Toggle Zen mode' })
       vim.keymap.set("n", "<leader>gg",  function() Snacks.lazygit.open() end,   { desc = 'LazyGit' })
-      vim.keymap.set('n', "<leader>sf", function() Snacks.picker.smart() end,   { desc = "Smart find files" })
-      vim.keymap.set('n', "<leader><leader>", function() Snacks.picker.buffers() end, { desc = "Search buffers" })
-      vim.keymap.set('n', "<leader>ff", function() Snacks.picker.files({ hidden = true }) end, { desc = "Find files" })
-      vim.keymap.set('n', "<leader>fg", function() Snacks.picker.git_files() end,     { desc = "Find git files" })
-      vim.keymap.set('n', "<leader>sb", function() Snacks.picker.lines() end,         { desc = "Buffer lines" })
-      vim.keymap.set('n', "<leader>sB", function() Snacks.picker.grep_buffers() end,  { desc = "Grep open buffers" })
-      vim.keymap.set('n', "<leader>sg", function() Snacks.picker.grep() end,          { desc = "Grep" })
-      vim.keymap.set({ "n", "x" }, "<leader>sw", function() Snacks.picker.grep_word() end, { desc = "Grep word" })
-      vim.keymap.set('n', "<leader>sd", function() Snacks.picker.diagnostics() end,        { desc = "Diagnostics" })
-      vim.keymap.set('n', "<leader>sD", function() Snacks.picker.diagnostics_buffer() end, { desc = "Buffer diagnostics" })
-      vim.keymap.set('n', "<leader>sh", function() Snacks.picker.help() end,    { desc = "Help pages" })
-      vim.keymap.set('n', "<leader>sj", function() Snacks.picker.jumps() end,   { desc = "Jumps" })
-      vim.keymap.set('n', "<leader>sk", function() Snacks.picker.keymaps() end, { desc = "Keymaps" })
-      vim.keymap.set('n', "<leader>sl", function() Snacks.picker.loclist() end, { desc = "Location list" })
-      vim.keymap.set('n', "<leader>sm", function() Snacks.picker.marks() end,   { desc = "Marks" })
-      vim.keymap.set('n', "<leader>sM", function() Snacks.picker.man() end,     { desc = "Man pages" })
-      vim.keymap.set('n', "<leader>sq", function() Snacks.picker.qflist() end,  { desc = "Quickfix list" })
-      vim.keymap.set('n', "<leader>sR", function() Snacks.picker.resume() end,  { desc = "Resume" })
-      vim.keymap.set('n', "<leader>su", function() Snacks.picker.undo() end,    { desc = "Undo history" })
-      vim.keymap.set('n', "<leader>sn", function() Snacks.notifier.show_history() end, { desc = "Notification history" })
+      -- { lhs, picker, desc, picker opts, modes }
+      local pickers = {
+        { "<leader>sf",       "smart",              "Smart find files" },
+        { "<leader><leader>", "buffers",            "Search buffers" },
+        { "<leader>ff",       "files",              "Find files", { hidden = true } },
+        { "<leader>fg",       "git_files",          "Find git files" },
+        { "<leader>sb",       "lines",              "Buffer lines" },
+        { "<leader>sB",       "grep_buffers",       "Grep open buffers" },
+        { "<leader>sg",       "grep",               "Grep" },
+        { "<leader>sw",       "grep_word",          "Grep word", nil, { "n", "x" } },
+        { "<leader>sd",       "diagnostics",        "Diagnostics" },
+        { "<leader>sD",       "diagnostics_buffer", "Buffer diagnostics" },
+        { "<leader>sh",       "help",               "Help pages" },
+        { "<leader>sj",       "jumps",              "Jumps" },
+        { "<leader>sk",       "keymaps",            "Keymaps" },
+        { "<leader>sl",       "loclist",            "Location list" },
+        { "<leader>sm",       "marks",              "Marks" },
+        { "<leader>sM",       "man",                "Man pages" },
+        { "<leader>sq",       "qflist",             "Quickfix list" },
+        { "<leader>sR",       "resume",             "Resume" },
+        { "<leader>su",       "undo",               "Undo history" },
+      }
+      for _, p in ipairs(pickers) do
+        vim.keymap.set(p[5] or "n", p[1], function() Snacks.picker[p[2]](p[4]) end, { desc = p[3] })
+      end
+      vim.keymap.set("n", "<leader>sn", function() Snacks.notifier.show_history() end, { desc = "Notification history" })
 
       -- ── Toggles ──────────────────────────────────────────────────────────
       Snacks.toggle.option("spell",         { name = "Spelling" }):map("<leader>ts")
