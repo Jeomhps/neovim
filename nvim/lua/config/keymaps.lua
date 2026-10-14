@@ -37,7 +37,9 @@ vim.keymap.set('n', '<leader>cp', function()
     return vim.notify('pinact not found on PATH', vim.log.levels.ERROR)
   end
   vim.cmd.write()
-  vim.system({ 'pinact', 'run', file }, { text = true }, vim.schedule_wrap(function(res)
+  -- run from the repo root so pinact finds the project's .pinact.yaml (ignore_actions, ghes)
+  local root = vim.fs.root(file, '.git') or vim.fs.dirname(file)
+  vim.system({ 'pinact', 'run', file }, { text = true, cwd = root }, vim.schedule_wrap(function(res)
     if res.code ~= 0 then
       return vim.notify('pinact failed:\n' .. (res.stderr or ''), vim.log.levels.ERROR)
     end
