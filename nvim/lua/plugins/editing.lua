@@ -2,6 +2,7 @@ return {
   {
     "conform.nvim",
     auto_enable = true,
+    event = "BufWritePre", -- format_on_save is configured in setup, so load before the first save
     keys = {
       {
         "<leader>FF",

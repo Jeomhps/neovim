@@ -14,6 +14,18 @@ vim.g.loaded_tarPlugin        = 1
 vim.g.loaded_tutor_mode_plugin = 1
 vim.g.loaded_spellfile_plugin = 1
 
+-- ── WSL: put the slow Windows /mnt dirs last on PATH ─────────────────────────
+-- Each lookup of a tool by name (nvim-lint, conform, LSP spawns) scans PATH, and
+-- the /mnt/* entries are on a slow 9p mount: ~100 ms per lookup, since the Nix
+-- wrapper appends its tools after them. Windows exes (clip.exe, ...) still resolve.
+if vim.fn.has("wsl") == 1 then
+  local native, windows = {}, {}
+  for dir in vim.env.PATH:gmatch("[^:]+") do
+    table.insert(dir:find("^/mnt/") and windows or native, dir)
+  end
+  vim.env.PATH = table.concat(vim.list_extend(native, windows), ":")
+end
+
 vim.o.list      = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
