@@ -54,9 +54,9 @@ return {
           show_close_icon     = false,
         },
       })
-      vim.keymap.set('n', '<leader><leader>p', '<cmd>BufferLinePick<CR>',        { desc = 'Pick buffer' })
-      vim.keymap.set('n', '<leader><leader>o', '<cmd>BufferLineCloseOthers<CR>', { desc = 'Close other buffers' })
-      vim.keymap.set('n', '<leader><leader>s', '<cmd>BufferLineSortByDirectory<CR>', { desc = 'Sort buffers by directory' })
+      vim.keymap.set('n', '<leader>bp', '<cmd>BufferLinePick<CR>',        { desc = 'Pick buffer' })
+      vim.keymap.set('n', '<leader>bo', '<cmd>BufferLineCloseOthers<CR>', { desc = 'Close other buffers' })
+      vim.keymap.set('n', '<leader>bs', '<cmd>BufferLineSortByDirectory<CR>', { desc = 'Sort buffers by directory' })
     end,
   },
 
@@ -135,7 +135,7 @@ return {
     after = function(_)
       require('which-key').setup({})
       require('which-key').add {
-        { "<leader><leader>", group = "buffer" },
+        { "<leader>b",  group = "[b]uffer" },
         { "<leader>c",  group = "[c]ode" },
         { "<leader>d",  group = "[d]ocument" },
         { "<leader>g",  group = "[g]it" },

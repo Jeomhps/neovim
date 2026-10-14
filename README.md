@@ -112,17 +112,17 @@ Dashboard, notifier and zen mode are configured via `config/snacks.lua` (`Snacks
 | `<leader>td` | Toggle diagnostics |
 | `<leader>ti` | Toggle inlay hints |
 
-### Buffers (`<leader><leader>`)
+### Buffers (`<leader>b`, picker on `<leader><leader>`)
 | Key | Action |
 |---|---|
-| `<leader><leader>[` | Previous buffer |
-| `<leader><leader>]` | Next buffer |
-| `<leader><leader>l` | Last buffer |
-| `<leader><leader>d` | Delete buffer |
+| `<leader>b[` | Previous buffer |
+| `<leader>b]` | Next buffer |
+| `<leader>bl` | Last buffer |
+| `<leader>bd` | Delete buffer |
 | `<leader><leader>` | Search open buffers |
-| `<leader><leader>p` | Pick buffer |
-| `<leader><leader>o` | Close other buffers |
-| `<leader><leader>s` | Sort buffers by directory |
+| `<leader>bp` | Pick buffer |
+| `<leader>bo` | Close other buffers |
+| `<leader>bs` | Sort buffers by directory |
 
 ### Files & Search (`<leader>f` / `<leader>s`)
 | Key | Action |
