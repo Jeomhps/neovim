@@ -29,9 +29,6 @@ return {
           nmap('<leader>wl', function()
             print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
           end, '[W]orkspace [L]ist Folders')
-          vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-            vim.lsp.buf.format()
-          end, { desc = 'Format current buffer with LSP' })
           -- ── nvim-navic: winbar breadcrumbs ────────────────────────────────
           local ok_navic, navic = pcall(require, 'nvim-navic')
           if ok_navic and client:supports_method('textDocument/documentSymbol') then
@@ -119,7 +116,6 @@ return {
     for_cat = "lua",
     mason   = "lua-language-server",
     lsp = {
-      filetypes = { 'lua' },
       settings  = {
         Lua = {
           signatureHelp = { enabled = true },
@@ -136,7 +132,6 @@ return {
     enabled = nixInfo.isNix,
     for_cat = "nix",
     lsp = {
-      filetypes = { "nix" },
       settings  = {
         nixd = {
           nixpkgs    = { expr = [[import <nixpkgs> {}]] },
@@ -153,7 +148,6 @@ return {
     for_cat = "typst",
     mason = "tinymist",
     lsp = {
-      filetypes = { "typst" },
       settings = {
         formatterMode = "typstyle",
         exportPdf = "onType",
@@ -166,18 +160,14 @@ return {
     "gopls",
     for_cat = "go",
     mason   = "gopls",
-    lsp = {
-      filetypes = { "go", "gomod", "gowork", "gotmpl" },
-    },
+    lsp = {},
   },
 
   {
     "clangd",
     for_cat = "c",
     mason   = "clangd",
-    lsp = {
-      filetypes = { "c", "cpp" },
-    },
+    lsp = {},
   },
 
   {
@@ -185,8 +175,6 @@ return {
     for_cat = "yaml",
     mason   = "yaml-language-server",
     lsp = {
-      -- ansible files go to ansiblels instead (yamlls reports false errors there)
-      filetypes = { "yaml", "yaml.docker-compose", "yaml.gitlab" },
       settings = {
         redhat = { telemetry = { enabled = false } },
         yaml = {
@@ -212,7 +200,6 @@ return {
     for_cat = "json",
     mason   = "json-lsp",
     lsp = {
-      filetypes = { "json", "jsonc" },
       settings  = { json = { validate = { enable = true } } },
       before_init = function(_, config)
         pcall(vim.cmd.packadd, 'SchemaStore.nvim')
@@ -226,9 +213,7 @@ return {
     "terraformls",
     for_cat = "terraform",
     mason   = "terraform-ls",
-    lsp = {
-      filetypes = { "terraform", "terraform-vars" },
-    },
+    lsp = {},
   },
 
   {
@@ -236,7 +221,6 @@ return {
     for_cat = "kubernetes",
     mason   = "helm-ls",
     lsp = {
-      filetypes = { "helm" },
       settings  = { ['helm-ls'] = { yamlls = { path = "yaml-language-server" } } },
     },
   },
@@ -245,54 +229,42 @@ return {
     "ansiblels",
     for_cat = "ansible",
     mason   = "ansible-language-server",
-    lsp = {
-      filetypes = { "yaml.ansible" },
-    },
+    lsp = {},
   },
 
   {
     "docker_compose_language_service",
     for_cat = "docker",
     mason   = "docker-compose-language-service",
-    lsp = {
-      filetypes = { "yaml.docker-compose" },
-    },
+    lsp = {},
   },
 
   {
     "marksman",
     for_cat = "markdown",
     mason   = "marksman",
-    lsp = {
-      filetypes = { "markdown" },
-    },
+    lsp = {},
   },
 
   {
     "basedpyright",
     for_cat = "python",
     mason   = "basedpyright",
-    lsp = {
-      filetypes = { "python" },
-    },
+    lsp = {},
   },
 
   {
     "bashls",
     for_cat = "bash",
     mason   = "bash-language-server",
-    lsp = {
-      filetypes = { "sh", "bash" },
-    },
+    lsp = {},
   },
 
   {
     "dockerls",
     for_cat = "docker",
     mason   = "dockerfile-language-server",
-    lsp = {
-      filetypes = { "dockerfile" },
-    },
+    lsp = {},
   },
 
 }
