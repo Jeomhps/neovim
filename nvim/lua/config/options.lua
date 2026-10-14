@@ -14,18 +14,17 @@ vim.g.loaded_tarPlugin        = 1
 vim.g.loaded_tutor_mode_plugin = 1
 vim.g.loaded_spellfile_plugin = 1
 
-vim.o.exrc    = false
-vim.opt.list  = true
+vim.o.list      = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
-vim.opt.hlsearch   = true
-vim.opt.inccommand = 'split'
-vim.opt.scrolloff  = 10
+vim.o.inccommand = 'split'
+vim.o.scrolloff  = 10
 
-vim.wo.number         = true
-vim.wo.relativenumber = true
-vim.wo.signcolumn     = 'yes'
-vim.wo.cursorline     = true
+-- vim.o (:set) rather than vim.wo so every window inherits these, not just the first
+vim.o.number         = true
+vim.o.relativenumber = true
+vim.o.signcolumn     = 'yes'
+vim.o.cursorline     = true
 
 vim.o.winborder = 'rounded'
 
@@ -39,7 +38,6 @@ vim.o.smartcase   = true
 vim.o.updatetime  = 250
 vim.o.timeoutlen  = 300
 vim.o.completeopt = 'menu,preview,noselect'
-vim.o.termguicolors = true
 
 local clipboard_mode = nixInfo("system", "settings", "clipboard")
 if clipboard_mode == "wsl" then
