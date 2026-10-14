@@ -183,6 +183,7 @@ inputs:
       nvim-treesitter-textobjects
       persistence-nvim
       grug-far-nvim
+      oil-nvim
       rainbow-delimiters-nvim
       flash-nvim
       todo-comments-nvim

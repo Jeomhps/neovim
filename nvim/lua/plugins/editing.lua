@@ -115,4 +115,24 @@ return {
       vim.keymap.set("n", "<leader>st", "<cmd>TodoQuickFix<CR>", { desc = "Search Todo Comments" })
     end,
   },
+
+  {
+    -- oil.nvim: used for remote hosts only (oil-ssh://user@host//path).
+    -- Locally Snacks.explorer stays the file explorer, so oil must not hijack
+    -- directory buffers (default_file_explorer = false).
+    "oil.nvim",
+    auto_enable = true,
+    cmd   = { "Oil" },
+    event = {
+      { event = "BufReadCmd",  pattern = "oil-ssh://*" },
+      { event = "BufReadCmd",  pattern = "oil-ssh-sudo://*" },
+    },
+    after = function(_)
+      require("oil").setup({
+        default_file_explorer = false,
+        skip_confirm_for_simple_edits = true,
+        keymaps = { ["q"] = "actions.close" },
+      })
+    end,
+  },
 }

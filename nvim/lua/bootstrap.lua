@@ -72,6 +72,7 @@ vim.pack.add({
   opt('dstein64/vim-startuptime'),
   opt('folke/persistence.nvim'),
   opt('MagicDuck/grug-far.nvim'),
+  opt('stevearc/oil.nvim'),
 }, {
   confirm = false,
   load = function(p)
