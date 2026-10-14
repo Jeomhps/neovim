@@ -26,3 +26,22 @@ vim.keymap.set({"n", "v", "x"}, '<leader>Y', '"+yy', { noremap = true, silent = 
 vim.keymap.set({'n', 'v', 'x'}, '<leader>p', '"+p',  { noremap = true, silent = true, desc = 'Paste from clipboard' })
 vim.keymap.set('i', '<C-p>', '<C-r><C-p>+',           { noremap = true, silent = true, desc = 'Paste from clipboard (insert)' })
 vim.keymap.set("x", "<leader>P", '"_dP',               { noremap = true, silent = true, desc = 'Paste over selection' })
+
+-- Pin `uses: owner/action@v4` to its commit SHA (keeps a `# v4` comment) with pinact.
+vim.keymap.set('n', '<leader>cp', function()
+  local file = vim.api.nvim_buf_get_name(0)
+  if not (file:find('/%.github/workflows/') or file:find('/%.github/actions/')) then
+    return vim.notify('Not a GitHub Actions file', vim.log.levels.WARN)
+  end
+  if vim.fn.executable('pinact') ~= 1 then
+    return vim.notify('pinact not found on PATH', vim.log.levels.ERROR)
+  end
+  vim.cmd.write()
+  vim.system({ 'pinact', 'run', file }, { text = true }, vim.schedule_wrap(function(res)
+    if res.code ~= 0 then
+      return vim.notify('pinact failed:\n' .. (res.stderr or ''), vim.log.levels.ERROR)
+    end
+    vim.cmd.checktime() -- reload the buffer with the pinned shas
+    vim.notify('Pinned actions to commit SHAs')
+  end))
+end, { desc = '[C]ode [P]in GitHub actions to SHA' })
