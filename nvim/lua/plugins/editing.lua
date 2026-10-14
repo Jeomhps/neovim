@@ -63,12 +63,16 @@ return {
         bash             = { 'shellcheck' },
         dockerfile       = { 'hadolint' },
         yaml             = { 'yamllint' },
-        ['yaml.ansible'] = { 'ansible_lint' },
+        ansible          = { 'ansible_lint' },
         terraform        = { 'tflint' },
         markdown         = { 'markdownlint' },
       }
       local function run()
-        local names = vim.list_slice(lint.linters_by_ft[vim.bo.filetype] or {})
+        -- Compound filetypes (yaml.ansible, yaml.docker-compose) get each part's linters.
+        local names = {}
+        for _, ft in ipairs(vim.split(vim.bo.filetype, '.', { plain = true })) do
+          vim.list_extend(names, lint.linters_by_ft[ft] or {})
+        end
         -- GitHub Actions workflows are plain yaml; only lint those with actionlint.
         if vim.fn.expand('%:p'):find('/%.github/workflows/') then
           names[#names + 1] = 'actionlint'

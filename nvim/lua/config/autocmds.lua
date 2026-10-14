@@ -13,14 +13,31 @@ local yank_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true }
 vim.api.nvim_create_autocmd('TextYankPost', {
   group    = yank_group,
   pattern  = '*',
-  callback = function() vim.highlight.on_yank() end,
+  callback = function() vim.hl.on_yank() end,
 })
 
--- Detect Typst files and set filetype
-vim.api.nvim_create_autocmd({'BufReadPost', 'BufNewFile'}, {
-  pattern = {'*.typ'},
-  callback = function() vim.bo.filetype = 'typst' end,
-  desc = 'Set filetype for Typst files',
+-- Filetypes for devops files neovim doesn't detect on its own. Compound names
+-- (yaml.*) keep yaml tooling working while letting servers target the subtype.
+vim.filetype.add({
+  extension = { tfvars = 'terraform-vars' },
+  filename = {
+    ['.gitlab-ci.yml'] = 'yaml.gitlab',
+    ['.gitlab-ci.yaml'] = 'yaml.gitlab',
+    ['playbook.yml'] = 'yaml.ansible',
+    ['playbook.yaml'] = 'yaml.ansible',
+    ['site.yml'] = 'yaml.ansible',
+    ['site.yaml'] = 'yaml.ansible',
+  },
+  pattern = {
+    ['.*/templates/.*%.ya?ml'] = 'helm',
+    ['.*/templates/.*%.tpl'] = 'helm',
+    ['.*/helmfile.*%.ya?ml'] = 'helm',
+    ['.*/playbooks/.*%.ya?ml'] = 'yaml.ansible',
+    ['.*/roles/.*/tasks/.*%.ya?ml'] = 'yaml.ansible',
+    ['.*/roles/.*/handlers/.*%.ya?ml'] = 'yaml.ansible',
+    ['.*/docker%-compose[^/]*%.ya?ml'] = 'yaml.docker-compose',
+    ['.*/compose[^/]*%.ya?ml'] = 'yaml.docker-compose',
+  },
 })
 
 -- Restore cursor to last known position on reopen
@@ -40,6 +57,8 @@ vim.api.nvim_create_autocmd('BufWritePre', {
   desc = 'Trim trailing whitespace',
   pattern = '*',
   callback = function()
+    -- Markdown uses trailing double-space as a hard line break; diffs/binaries must stay byte-exact.
+    if vim.bo.binary or vim.tbl_contains({ 'markdown', 'diff' }, vim.bo.filetype) then return end
     local view = vim.fn.winsaveview()
     vim.cmd([[keeppatterns %s/\s\+$//e]])
     vim.fn.winrestview(view)
