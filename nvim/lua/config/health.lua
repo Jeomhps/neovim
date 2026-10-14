@@ -55,6 +55,35 @@ function M.check()
   vim.health.start("Docker")
   check_bin("docker-langserver", { hint = "nix: rebuild to pick up module.nix changes | non-nix: installs via Mason on first Dockerfile" })
   check_bin("hadolint", { hint = "nix: rebuild to pick up module.nix changes | non-nix: install manually (nvim-lint has no Mason fallback)" })
+
+  vim.health.start("YAML tooling")
+  check_bin("yamllint", { hint = "nix: rebuild | non-nix: install manually (nvim-lint has no Mason fallback)" })
+  check_bin("yamlfmt", { hint = "nix: rebuild | non-nix: install manually (conform has no Mason fallback)" })
+  check_bin("actionlint", { hint = "lints .github/workflows | nix: rebuild | non-nix: install manually" })
+
+  vim.health.start("Terraform / OpenTofu")
+  check_bin("terraform-ls", { hint = "nix: rebuild | non-nix: installs via Mason on first .tf file" })
+  check_bin("tflint", { hint = "nix: rebuild | non-nix: install manually (nvim-lint has no Mason fallback)" })
+  check_bin("tofu", { hint = "formats .tf via tofu_fmt (or `terraform` for terraform_fmt) | nix: rebuild | non-nix: install manually" })
+
+  vim.health.start("Kubernetes / Helm")
+  check_bin("helm_ls", { hint = "nix: rebuild | non-nix: installs via Mason on first helm template" })
+
+  vim.health.start("Ansible")
+  check_bin("ansible-language-server", { hint = "nix: rebuild | non-nix: installs via Mason on first playbook" })
+  check_bin("ansible-lint", { hint = "nix: rebuild | non-nix: install manually (nvim-lint has no Mason fallback)" })
+
+  vim.health.start("JSON")
+  check_bin("vscode-json-language-server", { hint = "nix: rebuild | non-nix: installs via Mason (json-lsp) on first .json file" })
+  check_bin("jq", { hint = "formats json via conform | nix: rebuild | non-nix: install manually" })
+
+  vim.health.start("Markdown")
+  check_bin("marksman", { hint = "nix: rebuild | non-nix: installs via Mason on first .md file" })
+  check_bin("markdownlint", { hint = "nix: rebuild | non-nix: install manually (nvim-lint has no Mason fallback)" })
+
+  vim.health.start("Python")
+  check_bin("basedpyright-langserver", { hint = "nix: rebuild | non-nix: installs via Mason on first .py file" })
+  check_bin("ruff", { hint = "formats python via conform | nix: rebuild | non-nix: install manually" })
 end
 
 return M
