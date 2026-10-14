@@ -86,7 +86,10 @@ return {
         end, names)
         if #names > 0 then lint.try_lint(names) end
       end
-      vim.api.nvim_create_autocmd({ "BufWritePost" }, { callback = run })
+      -- Lint on open and on leaving insert too, not just on save. Disk-reading linters
+      -- (yamllint, tflint, ...) still only see saved content; stdin ones see the buffer.
+      vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost", "InsertLeave" }, { callback = run })
+      run() -- the buffer that triggered FileType is already loaded
     end,
   },
 
