@@ -21,7 +21,7 @@ Built on [`lze`](https://github.com/BirdeeHub/lze) + [`lzextras`](https://github
 |---|---|
 | Plugin loader | `lze` + `lzextras` |
 | Colorscheme | `catppuccin` (mocha by default, Nix-configurable) |
-| LSP | `nvim-lspconfig` + `Mason` (non-Nix fallback) — lua, nix, typst, go, c/c++, yaml, bash, docker |
+| LSP | `nvim-lspconfig` + `Mason` (non-Nix fallback) — lua, nix, typst, go, c/c++, yaml, json (SchemaStore), bash, docker/compose, terraform/tofu, helm, ansible, markdown, python |
 | Completion | `blink.cmp` (with cmdline + colorful labels) |
 | Snippets | `blink.cmp` built-in engine + `friendly-snippets` |
 | Fuzzy finder | `Snacks.picker` |
@@ -29,8 +29,9 @@ Built on [`lze`](https://github.com/BirdeeHub/lze) + [`lzextras`](https://github
 | Terminal | `Snacks.terminal` |
 | Git signs | `gitsigns.nvim` |
 | Git UI | `LazyGit` (via Snacks) |
-| Formatter | `conform.nvim` (format-on-save, toggleable) |
-| Linter | `nvim-lint` (`selene` for lua, `statix` for nix) |
+| Formatter | `conform.nvim` (format-on-save, toggleable) — stylua, shfmt, nixfmt, gofmt, clang-format, ruff, yamlfmt, jq, terraform/tofu fmt (skipped when not on PATH) |
+| Remote editing | `oil.nvim` over `oil-ssh://user@host//path` (remote only; local stays on Snacks.explorer) |
+| Linter | `nvim-lint` — selene, statix, shellcheck, hadolint, yamllint, actionlint, tflint, ansible-lint, markdownlint (skipped when not on PATH) |
 | Health check | `:checkhealth config` — verifies required external tools are on PATH |
 | Syntax / folds | `nvim-treesitter` + text objects |
 | Statusline | `lualine.nvim` (powerline separators, icons) |
@@ -211,7 +212,7 @@ Add a spec in **`lua/plugins/lsp.lua`**:
 On Nix, also add the server to your `module.nix` under the appropriate category.
 
 ### ➕ New formatter
-Add an entry in **`lua/plugins/editing.lua`** inside `conform.setup({ formatters_by_ft = { … } })`:
+Add an entry in **`lua/plugins/editing.lua`** inside the `available({ … })` table (entries whose binary isn't on PATH are dropped), and add the package to `module.nix`:
 ```neovim/nvim/lua/plugins/editing.lua#L1-1
 -- example:
 go = { "gofmt" },
