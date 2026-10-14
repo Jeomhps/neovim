@@ -133,6 +133,9 @@ inputs:
     data = null;
     extraPackages = with pkgs; [
       yaml-language-server
+      yamllint
+      yamlfmt
+      actionlint
     ];
   };
 
@@ -149,7 +152,57 @@ inputs:
     data = null;
     extraPackages = with pkgs; [
       dockerfile-language-server
+      docker-compose-language-service
       hadolint
+    ];
+  };
+
+  config.specs.json = {
+    data = null;
+    extraPackages = with pkgs; [
+      vscode-langservers-extracted
+      jq
+    ];
+  };
+
+  # opentofu provides `tofu` (conform's tofu_fmt); terraform itself is unfree.
+  config.specs.terraform = {
+    data = null;
+    extraPackages = with pkgs; [
+      terraform-ls
+      tflint
+      opentofu
+    ];
+  };
+
+  config.specs.kubernetes = {
+    data = null;
+    extraPackages = with pkgs; [
+      helm-ls
+    ];
+  };
+
+  config.specs.ansible = {
+    data = null;
+    extraPackages = with pkgs; [
+      ansible-language-server
+      ansible-lint
+    ];
+  };
+
+  config.specs.markdown = {
+    data = null;
+    extraPackages = with pkgs; [
+      marksman
+      markdownlint-cli
+    ];
+  };
+
+  config.specs.python = {
+    data = null;
+    extraPackages = with pkgs; [
+      basedpyright
+      ruff
     ];
   };
 
@@ -184,6 +237,7 @@ inputs:
       persistence-nvim
       grug-far-nvim
       oil-nvim
+      SchemaStore-nvim
       rainbow-delimiters-nvim
       flash-nvim
       todo-comments-nvim
@@ -215,6 +269,11 @@ inputs:
         tree-sitter-query
         tree-sitter-regex
         tree-sitter-comment
+        tree-sitter-hcl
+        tree-sitter-gotmpl
+        tree-sitter-jq
+        tree-sitter-mermaid
+        tree-sitter-diff
       ]))
     ];
   };

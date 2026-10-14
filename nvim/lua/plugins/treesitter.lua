@@ -33,6 +33,9 @@ return {
       -- `export` and ${VAR} interpolation. The filetype stays `env`, so
       -- bashls/shellcheck (attached to `sh`) won't lint secrets files.
       vim.treesitter.language.register("bash", "env")
+      -- No terraform/helm grammars in nixpkgs: reuse hcl and go-template.
+      vim.treesitter.language.register("hcl", { "terraform", "terraform-vars" })
+      vim.treesitter.language.register("gotmpl", "helm")
       local installable = require("nvim-treesitter").get_available()
       vim.api.nvim_create_autocmd("FileType", {
         callback = function(args)

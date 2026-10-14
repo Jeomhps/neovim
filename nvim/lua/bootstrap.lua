@@ -72,6 +72,7 @@ vim.pack.add({
   opt('neovim/nvim-lspconfig'),
   opt('folke/lazydev.nvim'),
   opt('williamboman/mason.nvim'),
+  opt('b0o/SchemaStore.nvim'),
   opt('SmiteshP/nvim-navic'),
 
   -- ── Completion ─────────────────────────────────────────────────────────────
