@@ -2,7 +2,14 @@ return {
   {
     "conform.nvim",
     auto_enable = true,
-    keys = { { "<leader>FF", desc = "[F]ormat [F]ile" } },
+    keys = {
+      {
+        "<leader>FF",
+        function() require("conform").format({ lsp_format = "fallback", async = false, timeout_ms = 1000 }) end,
+        mode = { "n", "v" },
+        desc = "[F]ormat [F]ile",
+      },
+    },
     after = function(_)
       local conform = require("conform")
 
@@ -44,9 +51,6 @@ return {
           return { timeout_ms = 1000, lsp_format = "fallback" }
         end,
       })
-      vim.keymap.set({ "n", "v" }, "<leader>FF", function()
-        conform.format({ lsp_format = "fallback", async = false, timeout_ms = 1000 })
-      end, { desc = "[F]ormat [F]ile" })
     end,
   },
 
@@ -127,12 +131,11 @@ return {
   {
     "grug-far.nvim",
     auto_enable = true,
-    keys = { { "<leader>sr", desc = "Search and Replace" } },
+    keys = { { "<leader>sr", function() require("grug-far").open() end, desc = "Search and Replace" } },
     after = function(_)
       require("grug-far").setup({
         keymaps = { close = { n = "q" } },
       })
-      vim.keymap.set("n", "<leader>sr", function() require("grug-far").open() end, { desc = "Search and Replace" })
     end,
   },
 
@@ -143,16 +146,14 @@ return {
     "flash.nvim",
     auto_enable = true,
     keys = {
-      { "s", mode = { "n", "x", "o" }, desc = "Flash" },
-      { "S", mode = { "n", "o" },      desc = "Flash Treesitter" },
-      { "r", mode = "o",               desc = "Remote Flash" },
-      { "R", mode = { "o", "x" },      desc = "Treesitter Search" },
+      { "s",     function() require("flash").jump() end,              mode = { "n", "x", "o" }, desc = "Flash" },
+      { "S",     function() require("flash").treesitter() end,        mode = { "n", "o" },      desc = "Flash Treesitter" },
+      { "r",     function() require("flash").remote() end,            mode = "o",               desc = "Remote Flash" },
+      { "R",     function() require("flash").treesitter_search() end, mode = { "o", "x" },      desc = "Treesitter Search" },
     },
     after = function(_)
-      vim.keymap.set({ "n", "x", "o" }, "s", function() require("flash").jump() end,               { desc = "Flash" })
-      vim.keymap.set({ "n", "o" },      "S", function() require("flash").treesitter() end,          { desc = "Flash Treesitter" })
-      vim.keymap.set("o",               "r", function() require("flash").remote() end,              { desc = "Remote Flash" })
-      vim.keymap.set({ "o", "x" },      "R", function() require("flash").treesitter_search() end,   { desc = "Treesitter Search" })
+      require("flash").setup()
+      -- cmdline-mode maps aren't lazy-loaded by lze, so set this one here
       vim.keymap.set("c", "<C-s>", function() require("flash").toggle() end, { desc = "Toggle Flash Search" })
     end,
   },

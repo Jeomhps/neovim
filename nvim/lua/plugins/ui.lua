@@ -114,8 +114,8 @@ return {
     auto_enable = true,
     cmd = { "DiffviewOpen", "DiffviewFileHistory", "DiffviewClose" },
     keys = {
-      { "<leader>gv", desc = "Diffview open" },
-      { "<leader>gh", desc = "Diffview file history" },
+      { "<leader>gv", "<cmd>DiffviewOpen<CR>",        desc = "Diffview open" },
+      { "<leader>gh", "<cmd>DiffviewFileHistory<CR>", desc = "Diffview file history" },
     },
     after = function(_)
       require('diffview').setup({
@@ -125,8 +125,6 @@ return {
           file_history_panel  = { { "n", "q", "<Cmd>DiffviewClose<CR>", { desc = "Close the diffview" } } },
         },
       })
-      vim.keymap.set('n', '<leader>gv', '<cmd>DiffviewOpen<CR>',        { desc = 'Diffview open' })
-      vim.keymap.set('n', '<leader>gh', '<cmd>DiffviewFileHistory<CR>', { desc = 'Diffview file history' })
     end,
   },
 
