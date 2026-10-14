@@ -5,19 +5,47 @@ return {
     keys = { { "<leader>FF", desc = "[F]ormat [F]ile" } },
     after = function(_)
       local conform = require("conform")
+
+      -- Formatters are gated on the binary being on PATH rather than on Nix
+      -- cats, so Nix and non-Nix behave the same (conform has no Mason
+      -- fallback; on non-Nix install the tools manually, see :checkhealth config).
+      local bin = { terraform_fmt = "terraform", tofu_fmt = "tofu", ruff_format = "ruff" }
+      local function available(by_ft)
+        local out = {}
+        for ft, list in pairs(by_ft) do
+          local keep = { stop_after_first = list.stop_after_first }
+          for _, name in ipairs(list) do
+            if vim.fn.executable(bin[name] or name) == 1 then keep[#keep + 1] = name end
+          end
+          if #keep > 0 then out[ft] = keep end
+        end
+        return out
+      end
+
+      local tf = { "terraform_fmt", "tofu_fmt", stop_after_first = true }
       conform.setup({
-        formatters_by_ft = {
-          -- add formatters here, e.g.: go = { "gofmt" },
-          lua = nixInfo(nil, "settings", "cats", "lua") and { "stylua" } or nil,
-          sh  = nixInfo(nil, "settings", "cats", "bash") and { "shfmt" } or nil,
-        },
+        formatters_by_ft = available({
+          lua                = { "stylua" },
+          sh                 = { "shfmt" },
+          bash               = { "shfmt" },
+          nix                = { "nixfmt" },
+          go                 = { "gofmt" },
+          c                  = { "clang-format" },
+          cpp                = { "clang-format" },
+          python             = { "ruff_format" },
+          yaml               = { "yamlfmt" },
+          json               = { "jq" },
+          terraform          = tf,
+          ["terraform-vars"] = tf,
+          hcl                = tf,
+        }),
         format_on_save = function(_)
           if vim.g.autoformat == false then return end
-          return { timeout_ms = 1000, lsp_fallback = true }
+          return { timeout_ms = 1000, lsp_format = "fallback" }
         end,
       })
       vim.keymap.set({ "n", "v" }, "<leader>FF", function()
-        conform.format({ lsp_fallback = true, async = false, timeout_ms = 1000 })
+        conform.format({ lsp_format = "fallback", async = false, timeout_ms = 1000 })
       end, { desc = "[F]ormat [F]ile" })
     end,
   },
@@ -27,15 +55,34 @@ return {
     auto_enable = true,
     event = "FileType",
     after = function(_)
-      require('lint').linters_by_ft = {
-        lua        = { 'selene' },
-        nix        = { 'statix' },
-        sh         = { 'shellcheck' },
-        dockerfile = { 'hadolint' },
+      local lint = require('lint')
+      lint.linters_by_ft = {
+        lua              = { 'selene' },
+        nix              = { 'statix' },
+        sh               = { 'shellcheck' },
+        bash             = { 'shellcheck' },
+        dockerfile       = { 'hadolint' },
+        yaml             = { 'yamllint' },
+        ['yaml.ansible'] = { 'ansible_lint' },
+        terraform        = { 'tflint' },
+        markdown         = { 'markdownlint' },
       }
-      vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-        callback = function() require("lint").try_lint() end,
-      })
+      local function run()
+        local names = vim.list_slice(lint.linters_by_ft[vim.bo.filetype] or {})
+        -- GitHub Actions workflows are plain yaml; only lint those with actionlint.
+        if vim.fn.expand('%:p'):find('/%.github/workflows/') then
+          names[#names + 1] = 'actionlint'
+        end
+        -- Skip linters that aren't installed (nvim-lint throws on a missing binary).
+        names = vim.tbl_filter(function(name)
+          local l = lint.linters[name]
+          local cmd = type(l) == 'table' and l.cmd or nil
+          if type(cmd) == 'function' then cmd = cmd() end
+          return cmd == nil or vim.fn.executable(cmd) == 1
+        end, names)
+        if #names > 0 then lint.try_lint(names) end
+      end
+      vim.api.nvim_create_autocmd({ "BufWritePost" }, { callback = run })
     end,
   },
 
