@@ -31,7 +31,7 @@ Built on [`lze`](https://github.com/BirdeeHub/lze) + [`lzextras`](https://github
 | Git UI | `LazyGit` (via Snacks) |
 | Formatter | `conform.nvim` (format-on-save, toggleable) — stylua, shfmt, nixfmt, gofmt, clang-format, ruff, yamlfmt, jq, terraform/tofu fmt (skipped when not on PATH) |
 | Remote editing | `oil.nvim` over `oil-ssh://user@host//path` (remote only; local stays on Snacks.explorer) |
-| Linter | `nvim-lint` — selene, statix, shellcheck, hadolint, yamllint, actionlint, tflint, ansible-lint, markdownlint (skipped when not on PATH) |
+| Linter | `nvim-lint` — selene, statix, shellcheck, hadolint, yamllint, actionlint, zizmor, tflint, ansible-lint, markdownlint (skipped when not on PATH) |
 | Health check | `:checkhealth config` — verifies required external tools are on PATH |
 | Syntax / folds | `nvim-treesitter` + text objects |
 | Statusline | `lualine.nvim` (powerline separators, icons) |
@@ -105,6 +105,7 @@ Dashboard, notifier and zen mode are configured via `config/snacks.lua` (`Snacks
 | `<leader>y/Y` | Yank to system clipboard |
 | `<leader>p` | Paste from system clipboard |
 | `<leader>FF` | Format file (conform + LSP fallback) |
+| `<leader>cp` | Pin GitHub Actions `uses:` to commit SHAs (pinact; workflow files only) |
 | `<leader>tf` | Toggle format-on-save |
 | `<leader>ts` | Toggle spelling |
 | `<leader>tw` | Toggle wrap |

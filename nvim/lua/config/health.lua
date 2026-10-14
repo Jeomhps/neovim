@@ -60,6 +60,8 @@ function M.check()
   check_bin("yamllint", { hint = "nix: rebuild | non-nix: install manually (nvim-lint has no Mason fallback)" })
   check_bin("yamlfmt", { hint = "nix: rebuild | non-nix: install manually (conform has no Mason fallback)" })
   check_bin("actionlint", { hint = "lints .github/workflows | nix: rebuild | non-nix: install manually" })
+  check_bin("zizmor", { hint = "security-lints .github/workflows | nix: rebuild | non-nix: install manually" })
+  check_bin("pinact", { hint = "<leader>cp pins actions to SHAs (set GITHUB_TOKEN to avoid rate limits) | nix: rebuild | non-nix: install manually" })
 
   vim.health.start("Terraform / OpenTofu")
   check_bin("terraform-ls", { hint = "nix: rebuild | non-nix: installs via Mason on first .tf file" })

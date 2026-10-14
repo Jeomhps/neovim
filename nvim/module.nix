@@ -136,6 +136,8 @@ inputs:
       yamllint
       yamlfmt
       actionlint
+      zizmor
+      pinact
     ];
   };
 
