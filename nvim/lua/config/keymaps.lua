@@ -30,7 +30,7 @@ vim.keymap.set("x", "<leader>P", '"_dP',               { noremap = true, silent 
 -- Pin `uses: owner/action@v4` to its commit SHA (keeps a `# v4` comment) with pinact.
 vim.keymap.set('n', '<leader>cp', function()
   local file = vim.api.nvim_buf_get_name(0)
-  if not (file:find('/%.github/workflows/') or file:find('/%.github/actions/')) then
+  if not require('config.gha').is_gha(file) then
     return vim.notify('Not a GitHub Actions file', vim.log.levels.WARN)
   end
   if vim.fn.executable('pinact') ~= 1 then

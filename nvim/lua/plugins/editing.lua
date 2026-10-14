@@ -1,8 +1,4 @@
--- GitHub Actions workflows are yaml but follow different conventions (no `---`,
--- `on:` key), so linting/formatting treats them separately.
-local function is_workflow(path)
-  return path:find('/%.github/workflows/') ~= nil
-end
+local gha = require('config.gha')
 
 return {
   {
@@ -56,11 +52,11 @@ return {
         formatters = {
           -- Match yamllint's defaults (document-start, 2 spaces before comments); out of the
           -- box yamlfmt strips the leading `---` and pads comments with 1 space.
-          -- Workflows are the exception: nobody starts those with `---`.
+          -- Workflows and actions are the exception: nobody starts those with `---`.
           yamlfmt = {
             prepend_args = function(_, ctx)
               local opts = "pad_line_comments=2,retain_line_breaks=true"
-              if not is_workflow(ctx.filename) then opts = "include_document_start=true," .. opts end
+              if not gha.is_gha(ctx.filename) then opts = "include_document_start=true," .. opts end
               return { "-formatter", opts }
             end,
           },
@@ -90,7 +86,7 @@ return {
         terraform        = { 'tflint' },
         markdown         = { 'markdownlint' },
       }
-      -- yamllint's defaults flag normal workflow style (`on:` truthy, no `---`, long lines).
+      -- yamllint's defaults flag normal workflow/action style (`on:` truthy, no `---`, long lines).
       lint.linters.yamllint_workflow = vim.tbl_extend('force', lint.linters.yamllint, {
         args = {
           '-d', '{extends: default, rules: {document-start: disable, line-length: disable, truthy: {check-keys: false}}}',
@@ -103,8 +99,12 @@ return {
         for _, ft in ipairs(vim.split(vim.bo.filetype, '.', { plain = true })) do
           vim.list_extend(names, lint.linters_by_ft[ft] or {})
         end
-        if is_workflow(vim.fn.expand('%:p')) then
+        local path = vim.fn.expand('%:p')
+        if gha.is_workflow(path) then
           names = { 'yamllint_workflow', 'actionlint', 'zizmor' }
+        elseif gha.is_action(path) then
+          -- actionlint only understands workflows, not action.yml
+          names = { 'yamllint_workflow', 'zizmor' }
         end
         -- Skip linters that aren't installed (nvim-lint throws on a missing binary).
         names = vim.tbl_filter(function(name)
