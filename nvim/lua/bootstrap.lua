@@ -28,6 +28,9 @@ vim.pack.add({
   gh .. 'BirdeeHub/lze',
   gh .. 'BirdeeHub/lzextras',
 
+  -- Start: no lze spec loads it, and it must be active before buffers open.
+  gh .. 'tpope/vim-sleuth',
+
   -- ── Colorscheme ────────────────────────────────────────────────────────────
   -- Start: vim.cmd.colorscheme() is called in options.lua before lze.load.
   { src = gh .. 'catppuccin/nvim', name = 'catppuccin-nvim' },
@@ -65,7 +68,6 @@ vim.pack.add({
   opt('nvim-treesitter/nvim-treesitter-textobjects'),
 
   -- ── Editing ────────────────────────────────────────────────────────────────
-  opt('tpope/vim-sleuth'),
   opt('stevearc/conform.nvim'),
   opt('mfussenegger/nvim-lint'),
   opt('kylechui/nvim-surround'),
