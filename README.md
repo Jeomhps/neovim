@@ -21,24 +21,37 @@ Built on [`lze`](https://github.com/BirdeeHub/lze) + [`lzextras`](https://github
 |---|---|
 | Plugin loader | `lze` + `lzextras` |
 | Colorscheme | `catppuccin` (mocha by default, Nix-configurable) |
-| LSP | `nvim-lspconfig` + `Mason` (non-Nix fallback) |
+| LSP | `nvim-lspconfig` + `Mason` (non-Nix fallback) — lua, nix, typst, go, c/c++, yaml, json (SchemaStore), bash, docker/compose, terraform/tofu, helm, ansible, markdown, python |
 | Completion | `blink.cmp` (with cmdline + colorful labels) |
+| Snippets | `blink.cmp` built-in engine + `friendly-snippets` |
 | Fuzzy finder | `Snacks.picker` |
 | File explorer | `Snacks.explorer` (replaces netrw) |
 | Terminal | `Snacks.terminal` |
 | Git signs | `gitsigns.nvim` |
 | Git UI | `LazyGit` (via Snacks) |
-| Formatter | `conform.nvim` |
-| Linter | `nvim-lint` |
+| Formatter | `conform.nvim` (format-on-save, toggleable) — stylua, shfmt, nixfmt, gofmt, clang-format, ruff, yamlfmt, jq, terraform/tofu fmt (skipped when not on PATH) |
+| Remote editing | `oil.nvim` over `oil-ssh://user@host//path` (remote only; local stays on Snacks.explorer) |
+| Linter | `nvim-lint` — selene, statix, shellcheck, hadolint, yamllint, actionlint, tflint, ansible-lint, markdownlint (skipped when not on PATH) |
+| Health check | `:checkhealth config` — verifies required external tools are on PATH |
 | Syntax / folds | `nvim-treesitter` + text objects |
-| Statusline | `lualine.nvim` (with buffer tabline) |
+| Statusline | `lualine.nvim` (powerline separators, icons) |
+| Buffer tabs | `bufferline.nvim` (rounded/slant tabs, diagnostics) |
+| Winbar breadcrumbs | `nvim-navic` |
 | Icons | `mini.icons` |
 | Surround | `nvim-surround` |
 | LSP progress | `fidget.nvim` |
 | Keybinding hints | `which-key.nvim` |
 | Indent guides | `Snacks.indent` |
+| Big file handling | `Snacks.bigfile` (disables treesitter/LSP/matchparen above ~1.5MB) |
 | Startup profiling | `vim-startuptime` |
 | Clipboard (WSL) | `wsl-paste` / `win32yank` |
+| Session persistence | `persistence.nvim` |
+| Multi-file search & replace | `grug-far.nvim` |
+| Auto-pairs | `mini.pairs` |
+| Notifications | `Snacks.notifier` |
+| Dashboard | `Snacks.dashboard` |
+| Zen / focus mode | `Snacks.zen` |
+| Full diff review | `diffview.nvim` |
 
 ---
 
@@ -66,10 +79,12 @@ The early *setup* (indent guides, statuscolumn, `replace_netrw`) lives in `lua/c
 - **nvim-treesitter-textobjects** — `am/im` (function), `ac/ic` (class), `as` (scope).
 
 ### `lua/plugins/ui.lua`
-`mini.icons`, `fidget.nvim`, `lualine.nvim`, `gitsigns.nvim`, `which-key.nvim`.
+`mini.icons`, `mini.pairs`, `fidget.nvim`, `lualine.nvim`, `bufferline.nvim`, `gitsigns.nvim`, `diffview.nvim`, `which-key.nvim`.
+Dashboard, notifier and zen mode are configured via `config/snacks.lua` (`Snacks.dashboard`, `Snacks.notifier`, `Snacks.zen`).
+`vim.o.winborder = 'rounded'` (`config/options.lua`) rounds every floating window (LSP hover, diagnostics, pickers, notifications) globally.
 
 ### `lua/plugins/editing.lua`
-`conform.nvim` (formatting), `nvim-lint` (linting), `nvim-surround`, `vim-startuptime`.
+`conform.nvim` (formatting), `nvim-lint` (linting), `nvim-surround`, `vim-startuptime`, `persistence.nvim` (session save/restore), `grug-far.nvim` (multi-file search & replace).
 
 ---
 
@@ -84,11 +99,18 @@ The early *setup* (indent guides, statuscolumn, `replace_netrw`) lives in `lua/c
 | `<C-d>` / `<C-u>` | Scroll down/up (centered) |
 | `n` / `N` | Next/prev search result (centered) |
 | `J` / `K` (visual) | Move selection down/up |
-| `<leader>e` | Floating diagnostic |
+| `<leader>e` | File explorer |
+| `<leader>de` | Floating diagnostic |
 | `<leader>q` | Diagnostics location list |
 | `<leader>y/Y` | Yank to system clipboard |
 | `<leader>p` | Paste from system clipboard |
 | `<leader>FF` | Format file (conform + LSP fallback) |
+| `<leader>tf` | Toggle format-on-save |
+| `<leader>ts` | Toggle spelling |
+| `<leader>tw` | Toggle wrap |
+| `<leader>tn` | Toggle relative number |
+| `<leader>td` | Toggle diagnostics |
+| `<leader>ti` | Toggle inlay hints |
 
 ### Buffers (`<leader><leader>`)
 | Key | Action |
@@ -97,7 +119,10 @@ The early *setup* (indent guides, statuscolumn, `replace_netrw`) lives in `lua/c
 | `<leader><leader>]` | Next buffer |
 | `<leader><leader>l` | Last buffer |
 | `<leader><leader>d` | Delete buffer |
-| `<leader><leader>s` | Search open buffers |
+| `<leader><leader>` | Search open buffers |
+| `<leader><leader>p` | Pick buffer |
+| `<leader><leader>o` | Close other buffers |
+| `<leader><leader>s` | Sort buffers by directory |
 
 ### Files & Search (`<leader>f` / `<leader>s`)
 | Key | Action |
@@ -107,6 +132,8 @@ The early *setup* (indent guides, statuscolumn, `replace_netrw`) lives in `lua/c
 | `<leader>ff` | Find files |
 | `<leader>fg` | Find git files |
 | `<leader>sg` | Grep |
+| `<leader>sr` | Search and replace (multi-file) |
+| `q` (in grug-far) | Close grug-far |
 | `<leader>sw` | Grep word under cursor |
 | `<leader>sb` | Buffer lines |
 | `<leader>sB` | Grep open buffers |
@@ -116,6 +143,7 @@ The early *setup* (indent guides, statuscolumn, `replace_netrw`) lives in `lua/c
 | `<leader>sm` | Marks |
 | `<leader>sM` | Man pages |
 | `<leader>su` | Undo history |
+| `<leader>sn` | Notification history |
 | `<leader>sR` | Resume last picker |
 
 ### LSP
@@ -136,7 +164,7 @@ The early *setup* (indent guides, statuscolumn, `replace_netrw`) lives in `lua/c
 ### Git (`<leader>g`)
 | Key | Action |
 |---|---|
-| `<leader>_` | LazyGit |
+| `<leader>gg` | LazyGit |
 | `]c` / `[c` | Next/prev hunk |
 | `<leader>gs` / `<leader>gr` | Stage/reset hunk |
 | `<leader>gS` / `<leader>gR` | Stage/reset buffer |
@@ -146,11 +174,23 @@ The early *setup* (indent guides, statuscolumn, `replace_netrw`) lives in `lua/c
 | `<leader>gd` / `<leader>gD` | Diff index / last commit |
 | `<leader>gtb` | Toggle line blame |
 | `<leader>gtd` | Toggle deleted |
+| `<leader>gv` | Diffview open |
+| `<leader>gh` | Diffview file history |
+| `q` (in diffview) | Close diffview |
+
+### Session (`<leader>S`)
+| Key | Action |
+|---|---|
+| `<leader>Ss` | Restore session for cwd |
+| `<leader>SS` | Select session |
+| `<leader>Sl` | Restore last session |
+| `<leader>Sd` | Stop saving current session |
 
 ### Terminal
 | Key | Action |
 |---|---|
 | `<C-\>` | Toggle terminal |
+| `<leader>z` | Toggle Zen mode |
 
 ---
 
@@ -172,7 +212,7 @@ Add a spec in **`lua/plugins/lsp.lua`**:
 On Nix, also add the server to your `module.nix` under the appropriate category.
 
 ### ➕ New formatter
-Add an entry in **`lua/plugins/editing.lua`** inside `conform.setup({ formatters_by_ft = { … } })`:
+Add an entry in **`lua/plugins/editing.lua`** inside the `available({ … })` table (entries whose binary isn't on PATH are dropped), and add the package to `module.nix`:
 ```neovim/nvim/lua/plugins/editing.lua#L1-1
 -- example:
 go = { "gofmt" },

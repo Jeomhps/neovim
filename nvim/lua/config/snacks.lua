@@ -2,11 +2,42 @@
 -- hooks (replace_netrw, statuscolumn, indent) are registered before VimEnter.
 -- Keymaps are still registered lazily via the lze spec in plugins/snacks.lua.
 require('snacks').setup({
+  -- Auto-disables treesitter/LSP/matchparen/etc. above the size threshold —
+  -- treesitter's foldexpr/indentexpr in particular grind to a halt on large
+  -- files (e.g. a 65k-line JSON file), so this is the fix for that.
+  bigfile  = {},
   explorer = { replace_netrw = true },
-  picker   = { sources = { explorer = { auto_close = true } } },
+  picker   = { focus = "input", sources = { explorer = { auto_close = true, focus = "list" } } },
   git      = {},
   terminal = {},
   scope    = {},
+  notifier = { style = "minimal" },
+  zen      = {},
+  toggle   = { which_key = true, notify = true },
+  dashboard = {
+    preset = {
+      header = [[
+ ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
+ ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
+ ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
+ ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
+ ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
+ ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]],
+      keys = {
+        { icon = " ", key = "f", desc = "Find File",       action = function() Snacks.picker.files({ hidden = true }) end },
+        { icon = " ", key = "n", desc = "New File",         action = ":ene | startinsert" },
+        { icon = " ", key = "g", desc = "Find Text",        action = function() Snacks.picker.grep() end },
+        { icon = " ", key = "r", desc = "Recent Files",     action = function() Snacks.picker.recent() end },
+        { icon = " ", key = "c", desc = "Config",           action = function() Snacks.picker.files({ cwd = nixInfo.config_dir }) end },
+        { icon = " ", key = "s", desc = "Restore Session",  section = "session" },
+        { icon = " ", key = "q", desc = "Quit",             action = ":qa" },
+      },
+    },
+    sections = {
+      { section = "header" },
+      { section = "keys", gap = 1, padding = 1 },
+    },
+  },
   indent   = {
     scope = { hl = 'SnacksIndent' },
     chunk = { hl = 'SnacksIndent' },

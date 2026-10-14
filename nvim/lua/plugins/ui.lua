@@ -4,7 +4,10 @@ return {
     auto_enable = true,
     lazy = false,
     priority = 900,
-    after = function(_) require('mini.icons').setup() end,
+    after = function(_)
+      require('mini.icons').setup()
+      require('mini.pairs').setup()
+    end,
   },
 
   {
@@ -21,10 +24,10 @@ return {
     after = function(_)
       require('lualine').setup({
         options = {
-          icons_enabled        = false,
+          icons_enabled        = true,
           theme                = "auto",
-          component_separators = '|',
-          section_separators   = '',
+          component_separators = { left = '', right = '' },
+          section_separators   = { left = '', right = '' },
         },
         sections = {
           lualine_c = { { 'filename', path = 1, status = true } },
@@ -33,11 +36,27 @@ return {
           lualine_b = { { 'filename', path = 3, status = true } },
           lualine_x = { 'filetype' },
         },
-        tabline = {
-          lualine_a = { 'buffers' },
-          lualine_z = { 'tabs' },
+      })
+    end,
+  },
+
+  {
+    "bufferline.nvim",
+    auto_enable = true,
+    event = "DeferredUIEnter",
+    after = function(_)
+      require('bufferline').setup({
+        options = {
+          diagnostics         = "nvim_lsp",
+          separator_style     = "slant",
+          always_show_bufferline = true,
+          show_buffer_close_icons = false,
+          show_close_icon     = false,
         },
       })
+      vim.keymap.set('n', '<leader><leader>p', '<cmd>BufferLinePick<CR>',        { desc = 'Pick buffer' })
+      vim.keymap.set('n', '<leader><leader>o', '<cmd>BufferLineCloseOthers<CR>', { desc = 'Close other buffers' })
+      vim.keymap.set('n', '<leader><leader>s', '<cmd>BufferLineSortByDirectory<CR>', { desc = 'Sort buffers by directory' })
     end,
   },
 
@@ -91,6 +110,27 @@ return {
   },
 
   {
+    "diffview.nvim",
+    auto_enable = true,
+    cmd = { "DiffviewOpen", "DiffviewFileHistory", "DiffviewClose" },
+    keys = {
+      { "<leader>gv", desc = "Diffview open" },
+      { "<leader>gh", desc = "Diffview file history" },
+    },
+    after = function(_)
+      require('diffview').setup({
+        keymaps = {
+          view                = { { "n", "q", "<Cmd>DiffviewClose<CR>", { desc = "Close the diffview" } } },
+          file_panel          = { { "n", "q", "<Cmd>DiffviewClose<CR>", { desc = "Close the diffview" } } },
+          file_history_panel  = { { "n", "q", "<Cmd>DiffviewClose<CR>", { desc = "Close the diffview" } } },
+        },
+      })
+      vim.keymap.set('n', '<leader>gv', '<cmd>DiffviewOpen<CR>',        { desc = 'Diffview open' })
+      vim.keymap.set('n', '<leader>gh', '<cmd>DiffviewFileHistory<CR>', { desc = 'Diffview file history' })
+    end,
+  },
+
+  {
     "which-key.nvim",
     auto_enable = true,
     event = "DeferredUIEnter",
@@ -103,6 +143,7 @@ return {
         { "<leader>g",  group = "[g]it" },
         { "<leader>r",  group = "[r]ename" },
         { "<leader>s",  group = "[s]earch" },
+        { "<leader>S",  group = "[S]ession" },
         { "<leader>t",  group = "[t]oggles" },
         { "<leader>w",  group = "[w]orkspace" },
       }
@@ -121,6 +162,21 @@ return {
           rainbow_delimiters.enable(args.buf)
         end,
       })
+    end,
+  },
+
+  {
+    "typst-preview.nvim",
+    auto_enable = true,
+    -- Load for typst files; can also set lazy = false to always load
+    ft = "typst",
+    after = function(_)
+      -- typst-preview sets itself up on require; call setup and explicitly
+      -- point it at the tinymist binary Neovim has on its PATH.
+      local ok, mod = pcall(require, 'typst-preview')
+      if ok and type(mod.setup) == 'function' then
+        mod.setup({ dependencies_bin = { tinymist = 'tinymist' } })
+      end
     end,
   },
 }

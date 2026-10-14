@@ -9,10 +9,11 @@ return {
       vim.keymap.set("n", "-",          function() Snacks.explorer.open() end,  { desc = 'File explorer' })
       vim.keymap.set("n", "<leader>e",  function() Snacks.explorer.open() end,  { desc = 'File explorer' })
       vim.keymap.set("n", "<c-\\>",     function() Snacks.terminal.open() end,  { desc = 'Terminal' })
+      vim.keymap.set("n", "<leader>z",  function() Snacks.zen() end,            { desc = 'Toggle Zen mode' })
       vim.keymap.set("n", "<leader>gg",  function() Snacks.lazygit.open() end,   { desc = 'LazyGit' })
       vim.keymap.set('n', "<leader>sf", function() Snacks.picker.smart() end,   { desc = "Smart find files" })
       vim.keymap.set('n', "<leader><leader>", function() Snacks.picker.buffers() end, { desc = "Search buffers" })
-      vim.keymap.set('n', "<leader>ff", function() Snacks.picker.files() end,         { desc = "Find files" })
+      vim.keymap.set('n', "<leader>ff", function() Snacks.picker.files({ hidden = true }) end, { desc = "Find files" })
       vim.keymap.set('n', "<leader>fg", function() Snacks.picker.git_files() end,     { desc = "Find git files" })
       vim.keymap.set('n', "<leader>sb", function() Snacks.picker.lines() end,         { desc = "Buffer lines" })
       vim.keymap.set('n', "<leader>sB", function() Snacks.picker.grep_buffers() end,  { desc = "Grep open buffers" })
@@ -29,6 +30,19 @@ return {
       vim.keymap.set('n', "<leader>sq", function() Snacks.picker.qflist() end,  { desc = "Quickfix list" })
       vim.keymap.set('n', "<leader>sR", function() Snacks.picker.resume() end,  { desc = "Resume" })
       vim.keymap.set('n', "<leader>su", function() Snacks.picker.undo() end,    { desc = "Undo history" })
+      vim.keymap.set('n', "<leader>sn", function() Snacks.notifier.show_history() end, { desc = "Notification history" })
+
+      -- ── Toggles ──────────────────────────────────────────────────────────
+      Snacks.toggle.option("spell",         { name = "Spelling" }):map("<leader>ts")
+      Snacks.toggle.option("wrap",          { name = "Wrap" }):map("<leader>tw")
+      Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>tn")
+      Snacks.toggle.diagnostics():map("<leader>td")
+      Snacks.toggle.inlay_hints():map("<leader>ti")
+      Snacks.toggle.new({
+        name = "Autoformat",
+        get  = function() return vim.g.autoformat ~= false end,
+        set  = function(state) vim.g.autoformat = state end,
+      }):map("<leader>tf")
     end,
   },
 }

@@ -9,7 +9,7 @@ return {
     end,
     before = function(_)
       vim.lsp.config('*', {
-        on_attach = function(_, bufnr)
+        on_attach = function(client, bufnr)
           local nmap = function(keys, func, desc)
             vim.keymap.set('n', keys, func, { buffer = bufnr, desc = 'LSP: ' .. desc })
           end
@@ -32,7 +32,42 @@ return {
           vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
             vim.lsp.buf.format()
           end, { desc = 'Format current buffer with LSP' })
+          -- ── nvim-navic: winbar breadcrumbs ────────────────────────────────
+          local ok_navic, navic = pcall(require, 'nvim-navic')
+          if ok_navic and client:supports_method('textDocument/documentSymbol') then
+            navic.attach(client, bufnr)
+          end
+          -- ── Tinymist: pin / unpin the main file ──────────────────────────
+          if client.name == 'tinymist' then
+            nmap('<leader>tp', function()
+              client:exec_cmd(
+                { title = 'pin', command = 'tinymist.pinMain',
+                  arguments = { vim.api.nvim_buf_get_name(0) } },
+                { bufnr = bufnr }
+              )
+            end, '[T]inymist [P]in')
+            nmap('<leader>tu', function()
+              client:exec_cmd(
+                { title = 'unpin', command = 'tinymist.pinMain',
+                  arguments = { vim.v.null } },
+                { bufnr = bufnr }
+              )
+            end, '[T]inymist [U]npin')
+          end
         end,
+      })
+    end,
+  },
+
+  -- ── nvim-navic (winbar breadcrumbs) ──────────────────────────────────────
+  {
+    "nvim-navic",
+    auto_enable = true,
+    on_plugin = { "nvim-lspconfig" },
+    after = function(_)
+      require('nvim-navic').setup({
+        separator = '  ',
+        depth_limit = 5,
       })
     end,
   },
@@ -66,12 +101,15 @@ return {
     cmd = { "LazyDev" },
     ft  = "lua",
     after = function(_)
-      require('lazydev').setup({
+      -- nixInfo returns its first argument on non-Nix, so only build these paths on Nix.
+      local library = {}
+      if nixInfo.isNix then
         library = {
           { words = { "nixInfo%.lze" }, path = nixInfo("lze",      "plugins", "start", "lze")      .. '/lua' },
           { words = { "nixInfo%.lze" }, path = nixInfo("lzextras", "plugins", "start", "lzextras") .. '/lua' },
-        },
-      })
+        }
+      end
+      require('lazydev').setup({ library = library })
     end,
   },
 
@@ -108,4 +146,153 @@ return {
       },
     },
   },
+
+  {
+    -- Tinymist (Typst language server)
+    "tinymist",
+    for_cat = "typst",
+    mason = "tinymist",
+    lsp = {
+      filetypes = { "typst" },
+      settings = {
+        formatterMode = "typstyle",
+        exportPdf = "onType",
+        semanticTokens = "disable",
+      },
+    },
+  },
+
+  {
+    "gopls",
+    for_cat = "go",
+    mason   = "gopls",
+    lsp = {
+      filetypes = { "go", "gomod", "gowork", "gotmpl" },
+    },
+  },
+
+  {
+    "clangd",
+    for_cat = "c",
+    mason   = "clangd",
+    lsp = {
+      filetypes = { "c", "cpp" },
+    },
+  },
+
+  {
+    "yamlls",
+    for_cat = "yaml",
+    mason   = "yaml-language-server",
+    lsp = {
+      -- ansible files go to ansiblels instead (yamlls reports false errors there)
+      filetypes = { "yaml", "yaml.docker-compose", "yaml.gitlab" },
+      settings = {
+        redhat = { telemetry = { enabled = false } },
+        yaml = {
+          keyOrdering = false,
+          validate    = true,
+          -- schemastore.nvim supplies the catalog (GitHub Actions, compose, ...).
+          schemaStore = { enable = false, url = "" },
+          schemas     = { kubernetes = { "*.k8s.yaml", "k8s/**/*.yaml", "manifests/**/*.yaml" } },
+        },
+      },
+      before_init = function(_, config)
+        pcall(vim.cmd.packadd, 'SchemaStore.nvim')
+        local ok, store = pcall(require, 'schemastore')
+        if ok then
+          config.settings.yaml.schemas = vim.tbl_extend('force', store.yaml.schemas(), config.settings.yaml.schemas)
+        end
+      end,
+    },
+  },
+
+  {
+    "jsonls",
+    for_cat = "json",
+    mason   = "json-lsp",
+    lsp = {
+      filetypes = { "json", "jsonc" },
+      settings  = { json = { validate = { enable = true } } },
+      before_init = function(_, config)
+        pcall(vim.cmd.packadd, 'SchemaStore.nvim')
+        local ok, store = pcall(require, 'schemastore')
+        if ok then config.settings.json.schemas = store.json.schemas() end
+      end,
+    },
+  },
+
+  {
+    "terraformls",
+    for_cat = "terraform",
+    mason   = "terraform-ls",
+    lsp = {
+      filetypes = { "terraform", "terraform-vars" },
+    },
+  },
+
+  {
+    "helm_ls",
+    for_cat = "kubernetes",
+    mason   = "helm-ls",
+    lsp = {
+      filetypes = { "helm" },
+      settings  = { ['helm-ls'] = { yamlls = { path = "yaml-language-server" } } },
+    },
+  },
+
+  {
+    "ansiblels",
+    for_cat = "ansible",
+    mason   = "ansible-language-server",
+    lsp = {
+      filetypes = { "yaml.ansible" },
+    },
+  },
+
+  {
+    "docker_compose_language_service",
+    for_cat = "docker",
+    mason   = "docker-compose-language-service",
+    lsp = {
+      filetypes = { "yaml.docker-compose" },
+    },
+  },
+
+  {
+    "marksman",
+    for_cat = "markdown",
+    mason   = "marksman",
+    lsp = {
+      filetypes = { "markdown" },
+    },
+  },
+
+  {
+    "basedpyright",
+    for_cat = "python",
+    mason   = "basedpyright",
+    lsp = {
+      filetypes = { "python" },
+    },
+  },
+
+  {
+    "bashls",
+    for_cat = "bash",
+    mason   = "bash-language-server",
+    lsp = {
+      filetypes = { "sh", "bash" },
+    },
+  },
+
+  {
+    "dockerls",
+    for_cat = "docker",
+    mason   = "dockerfile-language-server",
+    lsp = {
+      filetypes = { "dockerfile" },
+    },
+  },
+
 }

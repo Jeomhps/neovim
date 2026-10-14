@@ -72,6 +72,15 @@ inputs:
           powershell.exe -NoLogo -NoProfile -NonInteractive -c Get-Clipboard | tr -d '\r'
         fi
       '')
+      # wslview: opens a URL / file in the default Windows application.
+      # typst-preview.nvim detects WSL and calls wslview to open the preview
+      # in the host browser. explorer.exe does the same thing and is always
+      # available in WSL without any extra Windows-side software.
+      # This is used by typst-preview.nvim to open the preview in the host browser
+      # when running in WSL.
+      (pkgs.writeShellScriptBin "wslview" ''
+        explorer.exe "$@"
+      '')
     ];
   };
 
@@ -81,6 +90,7 @@ inputs:
     extraPackages = with pkgs; [
       nixd
       nixfmt
+      statix
     ];
   };
 
@@ -91,6 +101,108 @@ inputs:
     extraPackages = with pkgs; [
       lua-language-server
       stylua
+      selene
+    ];
+  };
+
+  config.specs.typst = {
+    # Provide tinymist (Typst language server) in the Nix environment so
+    # the server binary is on PATH for Nix-managed Neovim.
+    data = null;
+    extraPackages = with pkgs; [
+      tinymist
+    ];
+  };
+
+  config.specs.go = {
+    data = null;
+    extraPackages = with pkgs; [
+      go
+      gopls
+    ];
+  };
+
+  config.specs.c = {
+    data = null;
+    extraPackages = with pkgs; [
+      clang-tools
+    ];
+  };
+
+  config.specs.yaml = {
+    data = null;
+    extraPackages = with pkgs; [
+      yaml-language-server
+      yamllint
+      yamlfmt
+      actionlint
+    ];
+  };
+
+  config.specs.bash = {
+    data = null;
+    extraPackages = with pkgs; [
+      bash-language-server
+      shellcheck
+      shfmt
+    ];
+  };
+
+  config.specs.docker = {
+    data = null;
+    extraPackages = with pkgs; [
+      dockerfile-language-server
+      docker-compose-language-service
+      hadolint
+    ];
+  };
+
+  config.specs.json = {
+    data = null;
+    extraPackages = with pkgs; [
+      vscode-langservers-extracted
+      jq
+    ];
+  };
+
+  # opentofu provides `tofu` (conform's tofu_fmt); terraform itself is unfree.
+  config.specs.terraform = {
+    data = null;
+    extraPackages = with pkgs; [
+      terraform-ls
+      tflint
+      opentofu
+    ];
+  };
+
+  config.specs.kubernetes = {
+    data = null;
+    extraPackages = with pkgs; [
+      helm-ls
+    ];
+  };
+
+  config.specs.ansible = {
+    data = null;
+    extraPackages = with pkgs; [
+      ansible-language-server
+      ansible-lint
+    ];
+  };
+
+  config.specs.markdown = {
+    data = null;
+    extraPackages = with pkgs; [
+      marksman
+      markdownlint-cli
+    ];
+  };
+
+  config.specs.python = {
+    data = null;
+    extraPackages = with pkgs; [
+      basedpyright
+      ruff
     ];
   };
 
@@ -103,21 +215,32 @@ inputs:
       { data = vim-sleuth; lazy = false; }
       { data = mini-nvim; lazy = false; }
       snacks-nvim
+      typst-preview-nvim
       nvim-lspconfig
+      nvim-navic
       nvim-surround
       vim-startuptime
       blink-cmp
       blink-compat
       cmp-cmdline
       colorful-menu-nvim
+      friendly-snippets
       lualine-nvim
+      bufferline-nvim
       gitsigns-nvim
+      diffview-nvim
       which-key-nvim
       fidget-nvim
       nvim-lint
       conform-nvim
       nvim-treesitter-textobjects
+      persistence-nvim
+      grug-far-nvim
+      oil-nvim
+      SchemaStore-nvim
       rainbow-delimiters-nvim
+      flash-nvim
+      todo-comments-nvim
       # withAllGrammars bakes 170+ parser directories into rtp, scanning them
       # on every startup is a major source of latency — list only what you use.
       # Run `nix repl` and browse `pkgs.tree-sitter-grammars` to find more names.
@@ -138,6 +261,7 @@ inputs:
         tree-sitter-markdown
         tree-sitter-markdown-inline
         tree-sitter-bash
+        tree-sitter-dockerfile
         tree-sitter-html
         tree-sitter-css
         tree-sitter-vim
@@ -145,6 +269,11 @@ inputs:
         tree-sitter-query
         tree-sitter-regex
         tree-sitter-comment
+        tree-sitter-hcl
+        tree-sitter-gotmpl
+        tree-sitter-jq
+        tree-sitter-mermaid
+        tree-sitter-diff
       ]))
     ];
   };
@@ -167,7 +296,7 @@ inputs:
     };
 
   # Collect all extraPackages across specs into the wrapper's PATH
-  config.extraPackages = config.specCollect (acc: v: acc ++ (v.extraPackages or [ ])) [ ];
+  config.runtimePkgs = config.specCollect (acc: v: acc ++ (v.extraPackages or [ ])) [ ];
 
   # Exposes { specName = true/false; } to Lua via nixInfo for for_cat checks
   options.settings.cats = lib.mkOption {

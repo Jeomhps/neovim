@@ -1,4 +1,19 @@
 -- [[ Options ]]
+
+-- ── Disable unused built-in runtime plugins ──────────────────────────────────
+-- netrw is fully replaced by Snacks.explorer (replace_netrw = true); the rest
+-- are rarely-used built-ins (archive editing, tutor, spellfile) — skipping
+-- their plugin/*.vim sourcing shaves a few ms off every startup.
+vim.g.loaded_netrwPlugin      = 1
+vim.g.loaded_netrw            = 1
+vim.g.loaded_gzip             = 1
+vim.g.loaded_zip              = 1
+vim.g.loaded_zipPlugin        = 1
+vim.g.loaded_tar              = 1
+vim.g.loaded_tarPlugin        = 1
+vim.g.loaded_tutor_mode_plugin = 1
+vim.g.loaded_spellfile_plugin = 1
+
 vim.o.exrc    = false
 vim.opt.list  = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
@@ -10,6 +25,9 @@ vim.opt.scrolloff  = 10
 vim.wo.number         = true
 vim.wo.relativenumber = true
 vim.wo.signcolumn     = 'yes'
+vim.wo.cursorline     = true
+
+vim.o.winborder = 'rounded'
 
 vim.o.mouse       = 'a'
 vim.o.expandtab   = true
@@ -44,8 +62,33 @@ elseif clipboard_mode == "system" then
   -- "none" → leave everything untouched
 end
 
-vim.g.netrw_liststyle = 0
-vim.g.netrw_banner    = 0
+-- ── Winbar (nvim-navic breadcrumbs) ──────────────────────────────────────────
+-- Defined here (not in the plugin spec) since winbar is redrawn constantly and
+-- must stay safe even before nvim-navic has loaded or attached to any client.
+_G.NavicWinbar = function()
+  local ok, navic = pcall(require, 'nvim-navic')
+  if ok and navic.is_available() then
+    return navic.get_location()
+  end
+  return ''
+end
+vim.o.winbar = "%{%v:lua.NavicWinbar()%}"
+
+-- ── Diagnostics ───────────────────────────────────────────────────────────────
+vim.diagnostic.config({
+  underline = true,
+  severity_sort = true,
+  virtual_text = { spacing = 4, source = "if_many", prefix = "●" },
+  float = { border = "rounded", source = "if_many" },
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = " ",
+      [vim.diagnostic.severity.WARN]  = " ",
+      [vim.diagnostic.severity.INFO]  = " ",
+      [vim.diagnostic.severity.HINT]  = " ",
+    },
+  },
+})
 
 -- ── Colorscheme ───────────────────────────────────────────────────────────────
 -- catppuccin-nvim is a start plugin (always in rtp) so this is safe here:

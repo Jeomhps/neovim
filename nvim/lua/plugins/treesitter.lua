@@ -8,6 +8,19 @@ return {
     after = function(_)
       local function try_attach(buf, language)
         if not vim.treesitter.language.add(language) then return false end
+        -- Snacks.bigfile flags huge/minified buffers via vim.b.bigfile. The
+        -- foldexpr/indentexpr computation below is O(lines) and is what
+        -- actually grinds a 65k-line file to a halt — highlighting itself is
+        -- viewport-driven and cheap, so keep it (deferred, for an instant
+        -- open) but skip fold/indent entirely for these buffers.
+        if vim.b[buf].bigfile then
+          vim.schedule(function()
+            if vim.api.nvim_buf_is_valid(buf) then
+              vim.treesitter.start(buf, language)
+            end
+          end)
+          return true
+        end
         vim.treesitter.start(buf, language)
         vim.wo.foldexpr   = "v:lua.vim.treesitter.foldexpr()"
         vim.wo.foldmethod = "expr"
@@ -15,6 +28,14 @@ return {
         vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
         return true
       end
+      -- No dedicated dotenv parser: .env / .env.* / *.env (filetype `env`)
+      -- are valid shell assignments, so borrow bash for comments, quoting,
+      -- `export` and ${VAR} interpolation. The filetype stays `env`, so
+      -- bashls/shellcheck (attached to `sh`) won't lint secrets files.
+      vim.treesitter.language.register("bash", "env")
+      -- No terraform/helm grammars in nixpkgs: reuse hcl and go-template.
+      vim.treesitter.language.register("hcl", { "terraform", "terraform-vars" })
+      vim.treesitter.language.register("gotmpl", "helm")
       local installable = require("nvim-treesitter").get_available()
       vim.api.nvim_create_autocmd("FileType", {
         callback = function(args)

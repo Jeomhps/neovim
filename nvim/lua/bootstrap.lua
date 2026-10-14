@@ -21,6 +21,25 @@ local function opt(repo, name)
   return t
 end
 
+vim.api.nvim_create_autocmd('PackChanged', {
+  desc = 'Build blink.cmp native library after install/update',
+  callback = function(ev)
+    local d = ev.data
+    if d.spec.name ~= 'blink.cmp' or (d.kind ~= 'install' and d.kind ~= 'update') then
+      return
+    end
+    pcall(vim.cmd.packadd, 'blink.lib')
+    pcall(vim.cmd.packadd, 'blink.cmp')
+    local ok, cmp = pcall(require, 'blink.cmp')
+    if ok and type(cmp.build) == 'function' then
+      local build_ok, err = pcall(function() cmp.build():wait(60000) end)
+      if not build_ok then
+        vim.notify('[bootstrap] blink.cmp build failed: ' .. tostring(err), vim.log.levels.WARN)
+      end
+    end
+  end,
+})
+
 vim.pack.add({
   -- ── Lazy-loading framework ─────────────────────────────────────────────────
   -- Start plugins: packadd'd immediately by the load function below so that
@@ -28,23 +47,33 @@ vim.pack.add({
   gh .. 'BirdeeHub/lze',
   gh .. 'BirdeeHub/lzextras',
 
+  -- Start: no lze spec loads it, and it must be active before buffers open.
+  gh .. 'tpope/vim-sleuth',
+
   -- ── Colorscheme ────────────────────────────────────────────────────────────
   -- Start: vim.cmd.colorscheme() is called in options.lua before lze.load.
   { src = gh .. 'catppuccin/nvim', name = 'catppuccin-nvim' },
 
   -- ── UI ─────────────────────────────────────────────────────────────────────
   opt('folke/snacks.nvim'),
+  opt('chomosuke/typst-preview.nvim'),
   opt('echasnovski/mini.nvim'),
   opt('nvim-lualine/lualine.nvim'),
+  opt('akinsho/bufferline.nvim'),
   opt('lewis6991/gitsigns.nvim'),
+  opt('sindrets/diffview.nvim'),
   opt('folke/which-key.nvim'),
   opt('j-hui/fidget.nvim'),
   opt('HiPhish/rainbow-delimiters.nvim'),
+  opt('folke/flash.nvim'),
+  opt('folke/todo-comments.nvim'),
 
   -- ── LSP ────────────────────────────────────────────────────────────────────
   opt('neovim/nvim-lspconfig'),
   opt('folke/lazydev.nvim'),
   opt('williamboman/mason.nvim'),
+  opt('b0o/SchemaStore.nvim'),
+  opt('SmiteshP/nvim-navic'),
 
   -- ── Completion ─────────────────────────────────────────────────────────────
   gh .. 'Saghen/blink.lib',  -- start: must be in rtp before blink.cmp loads
@@ -52,17 +81,20 @@ vim.pack.add({
   opt('Saghen/blink.compat'),
   opt('hrsh7th/cmp-cmdline'),
   opt('xzbdmw/colorful-menu.nvim'),
+  opt('rafamadriz/friendly-snippets'),
 
   -- ── Treesitter ─────────────────────────────────────────────────────────────
   opt('nvim-treesitter/nvim-treesitter'),
   opt('nvim-treesitter/nvim-treesitter-textobjects'),
 
   -- ── Editing ────────────────────────────────────────────────────────────────
-  opt('tpope/vim-sleuth'),
   opt('stevearc/conform.nvim'),
   opt('mfussenegger/nvim-lint'),
   opt('kylechui/nvim-surround'),
   opt('dstein64/vim-startuptime'),
+  opt('folke/persistence.nvim'),
+  opt('MagicDuck/grug-far.nvim'),
+  opt('stevearc/oil.nvim'),
 }, {
   confirm = false,
   load = function(p)
@@ -76,19 +108,5 @@ vim.pack.add({
 
 -- ── blink.cmp native library ──────────────────────────────────────────────────
 -- blink.cmp v2 delegates native lib download to blink.lib.native.
--- Replicates lazy.nvim's `build = function() require('blink.cmp').build():wait() end`
--- blink.lib is already packadd'd (start plugin); we just need to temporarily
--- packadd blink.cmp so we can call build(), then let lze manage it from there.
-do
-  local blink_dir = vim.fn.globpath(vim.o.packpath, 'pack/*/opt/blink.cmp', 0, 1)[1]
-  if blink_dir and blink_dir ~= '' then
-    pcall(vim.cmd.packadd, 'blink.cmp')
-    local ok, cmp = pcall(require, 'blink.cmp')
-    if ok and type(cmp.build) == 'function' then
-      local build_ok, err = pcall(function() cmp.build():wait(60000) end)
-      if not build_ok then
-        vim.notify('[bootstrap] blink.cmp build failed: ' .. tostring(err), vim.log.levels.WARN)
-      end
-    end
-  end
-end
+-- Build only when vim.pack installs/updates it, not on every startup: a build
+-- on each launch packadds blink.cmp eagerly and defeats its lazy loading.
