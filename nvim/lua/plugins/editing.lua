@@ -86,10 +86,10 @@ return {
         terraform        = { 'tflint' },
         markdown         = { 'markdownlint' },
       }
-      -- yamllint's defaults flag normal workflow/action style (`on:` truthy, no `---`, long lines).
+      -- yamllint's defaults flag normal workflow/action style (no `---`, long lines).
       lint.linters.yamllint_workflow = vim.tbl_extend('force', lint.linters.yamllint, {
         args = {
-          '-d', '{extends: default, rules: {document-start: disable, line-length: disable, truthy: {check-keys: false}}}',
+          '-d', '{extends: default, rules: {document-start: disable, line-length: disable}}',
           '--format', 'parsable', '-',
         },
       })
