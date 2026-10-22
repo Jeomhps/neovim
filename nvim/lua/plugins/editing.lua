@@ -45,6 +45,7 @@ return {
           python             = { "ruff_format" },
           yaml               = { "yamlfmt" },
           json               = { "jq" },
+          toml               = { "taplo" },
           terraform          = tf,
           ["terraform-vars"] = tf,
           hcl                = tf,
@@ -84,7 +85,9 @@ return {
         yaml             = { 'yamllint' },
         ansible          = { 'ansible_lint' },
         terraform        = { 'tflint' },
-        markdown         = { 'markdownlint' },
+        markdown         = { 'markdownlint', 'codespell' },
+        gitcommit        = { 'codespell' },
+        text             = { 'codespell' },
       }
       -- yamllint's defaults flag normal workflow/action style (no `---`, long lines).
       lint.linters.yamllint_workflow = vim.tbl_extend('force', lint.linters.yamllint, {

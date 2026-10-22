@@ -197,6 +197,14 @@ inputs:
     extraPackages = with pkgs; [
       marksman
       markdownlint-cli
+      codespell
+    ];
+  };
+
+  config.specs.toml = {
+    data = null;
+    extraPackages = with pkgs; [
+      taplo
     ];
   };
 

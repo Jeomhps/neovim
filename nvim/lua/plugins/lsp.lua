@@ -261,6 +261,13 @@ return {
   },
 
   {
+    "taplo",
+    for_cat = "toml",
+    mason   = "taplo",
+    lsp = {},
+  },
+
+  {
     "dockerls",
     for_cat = "docker",
     mason   = "dockerfile-language-server",

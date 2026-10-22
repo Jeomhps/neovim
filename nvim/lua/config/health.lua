@@ -82,6 +82,10 @@ function M.check()
   vim.health.start("Markdown")
   check_bin("marksman", { hint = "nix: rebuild | non-nix: installs via Mason on first .md file" })
   check_bin("markdownlint", { hint = "nix: rebuild | non-nix: install manually (nvim-lint has no Mason fallback)" })
+  check_bin("codespell", { hint = "typo linter for markdown / commit messages | nix: rebuild | non-nix: install manually" })
+
+  vim.health.start("TOML")
+  check_bin("taplo", { hint = "LSP + formatter | nix: rebuild | non-nix: installs via Mason on first .toml file" })
 
   vim.health.start("Python")
   check_bin("basedpyright-langserver", { hint = "nix: rebuild | non-nix: installs via Mason on first .py file" })
