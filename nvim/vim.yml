@@ -1,0 +1,12 @@
+---
+base: lua51
+name: vim
+globals:
+  jit:
+    any: true
+  vim:
+    any: true
+  nixInfo:
+    any: true
+  Snacks:
+    any: true

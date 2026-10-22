@@ -1,0 +1,7 @@
+std = "vim"
+
+[lints]
+# lze/lualine specs mix positional and keyed fields by design
+mixed_table = "allow"
+# one-line `function() ... end` keymaps are the house style
+multiple_statements = "allow"

@@ -25,10 +25,12 @@ do
   local plugin_name = vim.g.nix_info_plugin_name
   local ok
   if plugin_name then
+    -- selene: allow(global_usage)
     ok, _G.nixInfo = pcall(require, plugin_name)
   end
   if not ok then
     local shim = setmetatable({}, { __call = function(_, default) return default end })
+    -- selene: allow(global_usage)
     _G.nixInfo = shim
     if plugin_name then
       package.loaded[plugin_name] = shim

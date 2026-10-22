@@ -90,7 +90,7 @@ return {
         text             = { 'codespell' },
       }
       -- yamllint's defaults flag normal workflow/action style (no `---`, long lines).
-      lint.linters.yamllint_workflow = vim.tbl_extend('force', lint.linters.yamllint, {
+      lint.linters.yamllint_workflow = vim.tbl_extend('force', lint.linters.yamllint --[[@as lint.Linter]], {
         args = {
           '-d', '{extends: default, rules: {document-start: disable, line-length: disable}}',
           '--format', 'parsable', '-',
@@ -116,7 +116,10 @@ return {
           if type(cmd) == 'function' then cmd = cmd() end
           return cmd == nil or vim.fn.executable(cmd) == 1
         end, names)
-        if #names > 0 then lint.try_lint(names) end
+        -- selene only reads selene.toml (and the vim.yml std) from its cwd, and
+        -- nvim-lint runs it from Neovim's cwd, so point it at the nearest config.
+        local cwd = vim.bo.filetype == 'lua' and vim.fs.root(0, 'selene.toml') or nil
+        if #names > 0 then lint.try_lint(names, { cwd = cwd }) end
       end
       -- Lint on open and on leaving insert too, not just on save. Disk-reading linters
       -- (yamllint, tflint, ...) still only see saved content; stdin ones see the buffer.

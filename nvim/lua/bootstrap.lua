@@ -31,7 +31,11 @@ vim.api.nvim_create_autocmd('PackChanged', {
     pcall(vim.cmd.packadd, 'blink.lib')
     pcall(vim.cmd.packadd, 'blink.cmp')
     local ok, cmp = pcall(require, 'blink.cmp')
+    -- build() exists in blink.cmp v2 (what vim.pack installs); lua_ls flags it
+    -- when it resolves the Nix-pinned 1.x, which has no such field.
+    ---@diagnostic disable-next-line: undefined-field
     if ok and type(cmp.build) == 'function' then
+      ---@diagnostic disable-next-line: undefined-field
       local build_ok, err = pcall(function() cmp.build():wait(60000) end)
       if not build_ok then
         vim.notify('[bootstrap] blink.cmp build failed: ' .. tostring(err), vim.log.levels.WARN)

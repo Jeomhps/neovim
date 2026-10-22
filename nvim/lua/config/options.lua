@@ -75,6 +75,7 @@ end
 -- ── Winbar (nvim-navic breadcrumbs) ──────────────────────────────────────────
 -- Defined here (not in the plugin spec) since winbar is redrawn constantly and
 -- must stay safe even before nvim-navic has loaded or attached to any client.
+-- selene: allow(global_usage)
 _G.NavicWinbar = function()
   local ok, navic = pcall(require, 'nvim-navic')
   if ok and navic.is_available() then
